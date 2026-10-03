@@ -1,0 +1,672 @@
+# SCA armoured (rattan) combat helm rules register
+# Scope: Kingdom of Lochac (AU/NZ) + SCA Inc. Society minimums.
+# text_type: "quote" = verbatim from source; "paraphrase" = close paraphrase.
+# applies_to: armoured = all armoured (rattan) combat; missile = only scenarios with
+#   combat archery arrows/bolts (Lochac) ; both = applies in either.
+# quantitative: list of {quantity, value, unit, comparator} or null.
+# status: verified_current = wording verified on 2026-10-03 in the current source;
+#   needs_confirmation = wording verified but which rule governs in Lochac, or its
+#   interpretation, is unresolved (see docs/rules_matrix.md "Open questions").
+# Design policy suggestion (not a rule): where Lochac v3.4 and Society 2026 differ,
+#   design to the stricter of the two.
+
+retrieved: 2026-10-03
+
+sources:
+  - id: LOCHAC-FH-WIKI
+    title: "Lochac Armoured Combat Fighters' Handbook - Armoured Combat:Armour requirements (chapter 7)"
+    issuer: "Kingdom of Lochac Marshallate (approved by Board of SCA Australia Ltd and Committee of SCA NZ Inc)"
+    version: "v3.4 (wiki page revision oldid=8765, page last modified 15 July 2025)"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Armour_requirements"
+    authority_status: current
+    notes: >-
+      Main page states "These rules are currently the official rules for Lochac. They have been
+      approved by the Board of SCA Ltd and Committee of SCANZ." Handbook page states v3.4 rule
+      changes came into effect 27 July 2024. Change log shows only link fixes since (24 Feb 2025,
+      12 July 2025); no newer Lochac armoured handbook version found. Section numbers are taken
+      from the PDF rendering (LOCHAC-FH-PDF-2026).
+
+  - id: LOCHAC-FH-PDF-2026
+    title: "Kingdom of Lochac Fighters' Handbook (PDF render of the wiki)"
+    issuer: "Kingdom of Lochac Marshallate"
+    version: "Version 3.4 July 2024; 'PDF generated: January 31, 2026'"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/index.php/Special:MakePdfBook/render/Armoured_Combat_-_Fighters_Handbook"
+    authority_status: current
+    notes: >-
+      Live PDF generated from the wiki. Helm-related text of sections 7.4-7.7 and 7.15.2 is
+      word-for-word identical to the July 2024 PDF (checked by normalised diff).
+
+  - id: LOCHAC-FH-PDF-2024
+    title: "Fighters_Handbook_v3.4_-_July_2024.pdf"
+    issuer: "Kingdom of Lochac Marshallate"
+    version: "Version 3.4 July 2024; 'PDF generated: July 25, 2024'"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/images/b/bc/Fighters_Handbook_v3.4_-_July_2024.pdf"
+    authority_status: current
+    notes: >-
+      Same rule content as current; static snapshot. The originally supplied URL
+      https://sca.org.nz/wiki/images/b/bc/Fighters_Handbook_v3.4_-_July_2024.pdf now redirects to
+      the Lochac rules wiki Main Page (HTML), not the PDF; the file is served at the URL above.
+      Handbook itself warns saved copies go stale; prefer LOCHAC-FH-WIKI.
+
+  - id: LOCHAC-NZ-LEGACY
+    title: "sca.org.nz/wiki Armoured_Combat:Armour_Requirements (legacy URL)"
+    issuer: "SCA New Zealand (legacy host of Lochac rules wiki)"
+    version: "n/a"
+    effective_date: null
+    url: "https://sca.org.nz/wiki/index.php?title=Armoured_Combat:Armour_Requirements"
+    authority_status: superseded
+    notes: >-
+      Returns 'There is currently no text in this page' (capital-R title no longer exists; wiki
+      migrated to rules.marshal.lochac.sca.org in Oct 2025 per Main Page news). Use LOCHAC-FH-WIKI.
+
+  - id: LOCHAC-GLOSSARY
+    title: "Lochac Fighters' Handbook - Armoured Combat:Glossary"
+    issuer: "Kingdom of Lochac Marshallate"
+    version: "v3.4 (oldid=8670, last modified 12 July 2025)"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Glossary"
+    authority_status: current
+    notes: "Definitions of Bars, Gauge, Resilient foam, Rigid material, Steel. Contains a bar-diameter figure inconsistent with 7.5.4 (see open questions)."
+
+  - id: LOCHAC-CHANGELOG
+    title: "Lochac Armoured Combat:Change log and Previous change logs"
+    issuer: "Kingdom of Lochac Marshallate"
+    version: "v3.4 + link fixes to 12 July 2025"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Change_log"
+    authority_status: current
+    notes: >-
+      v3.4 made no helm changes. July 2021 changes: '7.4.1.3 - updated to clarify that the metal
+      for helmets needs to be at least 1.6mm thick when completed'; added 7.5.7.g (maille <=5mm)
+      and 7.5.8 (screening secured against sideways and vertical movement). Previous logs at
+      https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Previous_change_logs
+
+  - id: LOCHAC-CA-EXEMPTION
+    title: "Lochac Archery Exemption from Society Earl Marshal (Armored Combat Exemption Agreement between SCA Inc., SCAA and SCANZ)"
+    issuer: "Society Earl Marshal, SCA Inc. (Omarad the Wary)"
+    version: "Memo dated 2 December 2011"
+    effective_date: 2011-12-02
+    url: "https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Combat_Archery_Exemption"
+    authority_status: current
+    notes: >-
+      Permits Lochac combat-archery deviations (wooden shafts, Riverhaven blunts, no APD) inside
+      Lochac only, conditional on 'Archery mesh' per the Lochac handbook for all combatants and
+      marshals. Still hosted in the current Lochac rules wiki; no revocation found (status
+      inferred from hosting - not independently confirmed).
+
+  - id: LOCHAC-MH-INSPECT
+    title: "Lochac Marshals' Handbook - Armoured Combat:Inspecting equipment"
+    issuer: "Kingdom of Lochac Marshallate"
+    version: "Marshals' Handbook (oldid=8678, last modified 12 July 2025)"
+    effective_date: 2024-07-27
+    url: "https://rules.marshal.lochac.sca.org/index.php/Armoured_Combat:Inspecting_equipment"
+    authority_status: current
+    notes: "No helm-specific inspection checklist; refers to Armour requirements. Siege: no projections intruding >13mm into a legal face grill."
+
+  - id: LOCHAC-MARSHAL-SITE
+    title: "marshal.lochac.sca.org 'Updates and Rulings'"
+    issuer: "Lochac Earl Marshal (website)"
+    version: "Newest item dated 30 July 2021"
+    effective_date: null
+    url: "https://marshal.lochac.sca.org/?p=6"
+    authority_status: superseded
+    notes: "Stale (footer says 'Marshal - Staging'); lists officers no longer current. Not used for requirements."
+
+  - id: SCA-AC-RATTAN-2026
+    title: "The Society for Creative Anachronism Inc. Armored Combat - Rattan Handbook"
+    issuer: "SCA Inc. Society Marshal (Board of Directors approval)"
+    version: "V2026.0 - Approved 23 June 2026, Effective 22 September 2026; PDF generated September 23, 2026"
+    effective_date: 2026-09-22
+    url: "https://www.sca.org/wp-content/uploads/2026/09/Armored_Combat_-_Rattan_-_Handbook_2026Sept.pdf"
+    authority_status: current
+    notes: >-
+      Linked from https://www.sca.org/resources/document-library/ as 'Armored Combat (Rattan)
+      Handbook'. Per its Handbook-updates policy, the PDF on sca.org is the official and
+      authoritative version. V2026.0 change log contains no helm changes; helm text dates from the
+      complete rebuild approved 23 June 2025 (which superseded the October 2023 Society Marshal's
+      Handbook). 1.2.1(b): kingdoms 'cannot reduce or disregard the requirements and standards
+      delineated in the Society handbooks without a variance'.
+
+  - id: SCA-WIKI-ARMOR
+    title: "Society rules wiki - Armored Combat:Equipment standards - Armor"
+    issuer: "SCA Inc. Society Marshal"
+    version: "oldid=1677"
+    effective_date: null
+    url: "https://society-rules.fullmesh.co.nz/index.php/Armored_Combat:Equipment_standards_-_Armor"
+    authority_status: current
+    notes: "Online reference (marshal.sca.org redirects here). Non-authoritative per policy; PDF governs. Not used for quotes."
+
+  - id: SCA-CL-2025-06
+    title: "Society Armored Combat:Change log - 23 June 2025"
+    issuer: "SCA Inc. Society Marshal"
+    version: "Completely new version - approved 23 June 2025"
+    effective_date: 2025-06-23
+    url: "https://society-rules.fullmesh.co.nz/index.php/Armored_Combat:Change_log_-_23_June_2025"
+    authority_status: superseded
+    notes: >-
+      Historical record (handbook since superseded by V2026.0, carrying forward the helm text).
+      Armor summary: 'increased the required steel thickness for some construction techniques for
+      helms'; 'Blind rivets have been added'; 'removed the rule about not attaching face guards to
+      the interior of the helm'.
+
+  - id: SCA-HB-UPDATES
+    title: "Society Armored Combat:Handbook updates (process incl. affiliates)"
+    issuer: "SCA Inc. Society Marshal"
+    version: "oldid=1807"
+    effective_date: null
+    url: "https://society-rules.fullmesh.co.nz/index.php/Armored_Combat:Handbook_updates"
+    authority_status: current
+    notes: >-
+      Increases in requirements effective immediately on approval (SCA Inc.); affiliates (e.g.
+      SCA Australia Ltd, SCA NZ Inc - Lochac) may request deferral; 'Affiliates must update or
+      modify their kingdom handbooks according to the determination'. Whether Lochac holds a
+      deferral for the 2025/2026 helm changes was NOT found.
+
+requirements:
+  # ---------------- General / coverage ----------------
+  - id: HELM-GEN-01
+    category: general
+    applies_to: both
+    text: "During combat, your head must be protected by a helmet constructed in compliance with these rules."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.1"
+    verification_method: "marshal inspection"
+    status: verified_current
+    design_note: "Society equivalent 12.4.1.1: head and neck protected by combination of helm and neck protection; e.g. a bevor could form part of the face protection."
+
+  - id: HELM-GEN-02
+    category: general
+    applies_to: both
+    text: "All armour must be free of sharp edges. Armour must be fastened in a way that prevents it from being dislodged during normal use. Armour must cover the areas that are required to be armoured throughout the normal range of movement."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.1"
+    verification_method: "marshal inspection; edge break check on all cut edges (incl. laser-cut grille apertures)"
+    status: verified_current
+    design_note: "Society 12.1.8 'All metal must be free of sharp edges.' Society 27.3.7 treats a 90-degree angle as a sharp edge (stated for shield rims) - deburr/radius all laser-cut edges."
+
+  - id: HELM-COV-01
+    category: coverage
+    applies_to: both
+    text: "Your helm, including the face guard, needs to have sufficient coverage to protect the bones of the skull and face. While it is necessary to protect the bones of your jaw, it is not considered essential to completely armour the soft tissue in the underside of the jaw."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.2"
+    verification_method: "geometric check in fit evaluator (headform skull/face bone coverage incl. occiput and mandible) + marshal inspection"
+    status: verified_current
+    design_note: "Identical wording in Society 12.4.2.1. No explicit numeric rear-of-skull/occipital coverage figure exists in either source; occiput is covered by 'bones of the skull'. Cervical vertebrae coverage handled by HELM-NECK-01."
+
+  - id: HELM-COV-02
+    category: coverage
+    applies_to: both
+    text: "Areas of your body which must be armoured are: The head and neck, including the face, throat, and the cervical and first thoracic vertebrae. ... The first thoracic vertebra is the first major lump which can be felt in the spine at the base of the neck."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.3.1"
+    verification_method: "geometric check in fit evaluator (helm + gorget/aventail union covers neck to T1) + marshal inspection with head turned/chin lifted"
+    status: verified_current
+    design_note: "Society 12.2.1(a) same."
+
+  - id: HELM-GEN-03
+    category: inspection
+    applies_to: both
+    text: "Before combat at each and every SCA event, including training and pick-ups, you must make sure that a rostered armoured combat marshal inspects and approves any armour and weapons which that you will use."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.2.3"
+    verification_method: "marshal inspection"
+    status: verified_current
+    design_note: "Final legality of any helm is a marshal's call at inspection; design compliance does not guarantee pass."
+
+  # ---------------- Thickness / material ----------------
+  - id: HELM-THK-01
+    category: material_thickness
+    applies_to: both
+    text: "Your helm, including the face guard, needs to be constructed of steel no less than 1.6mm thickness (16 gauge), or of equivalent material, when completed. Steel of less than 1.6mm is too thin, even if it is sold as 16 gauge."
+    text_type: quote
+    quantitative: [{quantity: finished_steel_thickness_incl_face_guard, value: 1.6, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.3"
+    verification_method: "measure finished thickness at thinnest point with micrometer/ultrasonic gauge (skull crown, raised/dished areas, ground edges, face guard)"
+    status: verified_current
+    design_note: >-
+      'when completed' = finished thickness, explicitly (Lochac 2021 change log: 'at least 1.6mm
+      thick when completed'). Applies to the face guard too, so a plate grille must be >=1.6 mm
+      finished. Society 12.4.2.2: 'cold-rolled steel no less than 1/16 inch (1.6 mm) thickness, or
+      of equivalent material, when completed. A1008 is the most common type of cold-rolled
+      steel.' 1/16 in = 1.5875 mm; treat 1.6 mm as the gate. External fact (not from sources): US
+      Manufacturers' Standard Gauge 16 = 0.0598 in (1.52 mm) - fails; buy >=1.6 mm actual (e.g.
+      1.6 mm metric sheet minus tolerance is risky - consider 2.0 mm).
+
+  - id: HELM-THK-02
+    category: material_thickness
+    applies_to: armoured
+    text: "1.3mm/18ga helms may not be used by any combatants, whether plumed or non-plumed. They may only be used by non-combatants who remain on the field during war combat with missile weapons, according to the requirements set out in 7.15."
+    text_type: quote
+    quantitative: [{quantity: combatant_helm_steel_thickness, value: 1.3, unit: mm, comparator: "prohibited (must exceed; see HELM-THK-01)"}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.3"
+    verification_method: "measure finished thickness with micrometer"
+    status: verified_current
+    design_note: "Out of product scope except as a marshal-helm variant (see HELM-NC-01)."
+
+  - id: HELM-THK-03
+    category: material_thickness
+    applies_to: both
+    text: "Some construction techniques, such as doming, sinking, spinning or excessive grinding of the skull of the helm, reduce the thickness of the metal. If these construction techniques are used, the top should be made from a minimum of 2.0mm (14 gauge) steel, so that the completed product is not less than 1.6mm (16 gauge)."
+    text_type: quote
+    quantitative: [{quantity: starting_stock_thickness_for_thinning_processes, value: 2.0, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.4"
+    verification_method: "material certificate/micrometer on blank + finished-thickness map of pressed skull"
+    status: needs_confirmation
+    design_note: >-
+      Lochac says 'should'; Society 12.4.2.3 says the top 'must be made from a minimum of 5/64 inch
+      (2.0 mm) steel' (5/64 in = 1.98 mm) - a June 2025 Society increase. Pressing/deep drawing a
+      skull is a thinning process: design to MUST 2.0 mm stock AND >=1.6 mm finished. External
+      fact: MSG 14 ga = 0.0747 in (1.90 mm) which is below the literal 2.0 mm figure.
+
+  - id: HELM-MAT-01
+    category: material_alternatives
+    applies_to: both
+    text: "Alternative materials such as stainless steel, brass, bronze or like materials are allowed as long as the material provides protection equivalent to 1.6mm thick steel."
+    text_type: quote
+    quantitative: [{quantity: protection_equivalence, value: 1.6, unit: mm_mild_steel_equivalent, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.5"
+    verification_method: "documentation of equivalency to Earl Marshal; marshal inspection"
+    status: verified_current
+    design_note: >-
+      Society 12.4.2.4: 'structurally equivalent to 1/16 inch (1.6 mm) thick cold-rolled steel' and
+      (a) 'Proof of construction technique, materials, and equivalency must be provided to the
+      Kingdom Earl Marshal or their designated deputy for approval'. Neither source sets a
+      hardness figure or permits thinner hardened/high-strength steel by name; 'equivalent' is
+      defined in glossary as virtually identical in impact resistance/distribution/absorption,
+      'not necessarily in physical dimensions'. Thinner HSLA/hardened steel would need EM approval.
+
+  - id: HELM-MAT-02
+    category: material_alternatives
+    applies_to: both
+    text: "Because mass is an important part of the protective qualities of a helm, titanium, fibreglass, or other materials may not be used in the construction of a helm if they render it lighter in weight than an equivalent helm constructed of 1.6mm steel."
+    text_type: quote
+    quantitative: [{quantity: helm_mass_vs_1p6mm_steel_equivalent, value: 1.0, unit: ratio, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.6"
+    verification_method: "compute mass of design vs same geometry in 1.6 mm steel (CAD mass check)"
+    status: verified_current
+    design_note: "Society 12.4.2.5 adds aluminum and 'other ultra-light materials'."
+
+  - id: HELM-MAT-03
+    category: material_alternatives
+    applies_to: both
+    text: "Steel: Cold- or hot-rolled mild steel or equivalent ferrous material. Gauge: ... 16-gauge is officially 1/16 inch (.0625 inch or about 1.6mm), but commercially available sheet is frequently rolled to .058 or even .055 inch - much too thin for helms."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-GLOSSARY
+    section: "Glossary - Steel; Gauge"
+    verification_method: "material certificate"
+    status: needs_confirmation
+    design_note: "Society 12.4.2.2 specifies 'cold-rolled steel' for helms (A1008 cited). Lochac glossary accepts hot-rolled. Specify cold-rolled (e.g. DC01/DC04/A1008-equivalent) to satisfy both."
+
+  # ---------------- Joints / rivets ----------------
+  - id: HELM-JNT-01
+    category: joints_seams
+    applies_to: both
+    text: "All joints or seams must be constructed in one or a combination of the following ways: (a) Welded on the inside and outside. (b) Welded with a single bead that extends through both surfaces. (c) Lap joints welded or brazed at the edges of both pieces."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.7(a)-(c)"
+    verification_method: "visual inspection of both faces of every weld; marshal inspection"
+    status: verified_current
+    design_note: "Identical in Society 12.4.2.6(a)-(c). Plug/spot/tack welds alone are not a listed method."
+
+  - id: HELM-JNT-02
+    category: joints_seams
+    applies_to: both
+    text: "Riveted with iron or steel rivets, no more than 63.5mm (2 1/2 inches) apart, or with equivalent riveting techniques. Screw and/or pop type rivets, along with other light-weight rivets, are not to be used."
+    text_type: quote
+    quantitative: [{quantity: rivet_pitch_max, value: 63.5, unit: mm, comparator: "<="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.7(d)"
+    verification_method: "measure rivet pitch in CAD and on part"
+    status: needs_confirmation
+    design_note: "Lochac rule is less specific than Society (HELM-JNT-03); use Society spacing."
+
+  - id: HELM-JNT-03
+    category: joints_seams
+    applies_to: both
+    text: "For primary construction, riveted with steel or stainless steel solid rivets of 1/8 inch (3.18 mm) to 3/16 inch (4.76 mm) in diameter spaced no more than 1 1/2 inches (38.1 mm) apart, or steel, stainless steel, or brass solid rivets 3/16 inch (4.76 mm) or greater diameter spaced no more than 2 1/2 inches (63.5 mm) apart, or with equivalent riveting techniques. Blind, screw- and pop-type rivets, along with other lightweight rivets, must not to be used."
+    text_type: quote
+    quantitative:
+      - {quantity: rivet_pitch_max_for_3.18_to_4.76mm_solid_rivets, value: 38.1, unit: mm, comparator: "<="}
+      - {quantity: rivet_pitch_max_for_>=4.76mm_solid_rivets, value: 63.5, unit: mm, comparator: "<="}
+      - {quantity: rivet_diameter_min, value: 3.18, unit: mm, comparator: ">="}
+    source_id: SCA-AC-RATTAN-2026
+    section: "12.4.2.6(d)"
+    verification_method: "measure rivet diameter and pitch in CAD and on part"
+    status: verified_current
+    design_note: "Stricter than Lochac 7.4.1.7(d). Brass rivets only allowed at >=4.76 mm diameter."
+
+  - id: HELM-INT-01
+    category: interior_projections
+    applies_to: both
+    text: "There must be no major projections on the inside of the helm. Minor projections of necessary structural components are permitted, but must be padded."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.8"
+    verification_method: "geometric check in fit evaluator (interior surface offset/projection scan) + marshal inspection of interior"
+    status: verified_current
+    design_note: "Society 12.4.2.7 same substance. No numeric limit for 'major'. Society 27.3.6.1(a) inspects interior for broken welds, loose rivets and internal projections. Rivet tails/bolt ends inside must be peened low and padded."
+
+  # ---------------- Padding / suspension ----------------
+  - id: HELM-PAD-01
+    category: padding_suspension
+    applies_to: both
+    text: "All parts of your helm that might come into contact with your head must be padded with a minimum of 12.7mm (1/2 inch) of resilient material, or suspended in such a way as to prevent injurious contact with you."
+    text_type: quote
+    quantitative: [{quantity: head_contact_padding_thickness, value: 12.7, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.9"
+    verification_method: "measure uncompressed liner thickness; geometric check in fit evaluator for >=12.7 mm standoff/padding everywhere head can contact; marshal inspection"
+    status: verified_current
+    design_note: "Society 12.4.2.8 same (1/2 inch). Glossary: 'Resilient foam - Dense, plastic, closed-cell foam such as ethyl polymer'; closed-cell foam like Ensolite is defined as 'less dense than resilient foam' (i.e. not the same class)."
+
+  - id: HELM-PAD-02
+    category: padding_suspension
+    applies_to: both
+    text: "Similarly, parts of the helm, which might come in contact with your neck or body, should be padded."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.9"
+    verification_method: "fit evaluator: identify rim/edge zones contacting neck/shoulders; marshal inspection"
+    status: needs_confirmation
+    design_note: "Society 12.4.2.9 is stricter: 'must be padded with a minimum of 1/2 inch (12.7 mm) of resilient material.' Design to Society."
+
+  # ---------------- Retention ----------------
+  - id: HELM-RET-01
+    category: retention
+    applies_to: both
+    text: "Your helm needs to be equipped with a chin strap or other means of preventing your helm from being dislodged during combat. An equivalent might be, for example, a strap from the helm to breast plate or a chin cup suspension system. A \"snug fit\" is not an equivalent. The chin strap must be a minimum 13mm in width and must not be placed in a manner that could strangle you."
+    text_type: quote
+    quantitative: [{quantity: chin_strap_width, value: 13, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.1.10"
+    verification_method: "measure strap width; marshal lifts helm gently (Society 27.3.6.2(d))"
+    status: verified_current
+    design_note: "Society 12.4.2.10: retention must also 'prevent metal from contacting your face'; bevor listed as equivalent; strap 'at least 1/2 inch (12.7 mm)'. Lochac 13 mm is the governing (stricter) width."
+
+  # ---------------- Face guard ----------------
+  - id: HELM-FG-01
+    category: face_guard_coverage
+    applies_to: both
+    text: "The face guard must completely cover the face opening of the helm and extend at least 25.4mm (1 inch) below the bottom of the chin and jaw line when the head is held erect."
+    text_type: quote
+    quantitative: [{quantity: face_guard_extension_below_chin_jawline, value: 25.4, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.1"
+    verification_method: "geometric check in fit evaluator (headform erect, measure vertical extension below chin/jaw line) + marshal inspection"
+    status: verified_current
+    design_note: "Society 12.4.3.2 same 1 inch."
+
+  - id: HELM-FG-02
+    category: face_guard_openings
+    applies_to: both
+    text: "Face guards must be constructed in a manner which will prevent a 25.4mm (1 inch) dowel from contacting the wearer's face."
+    text_type: quote
+    quantitative: [{quantity: dowel_diameter_must_not_contact_face, value: 25.4, unit: mm, comparator: "no contact"}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.2"
+    verification_method: "geometric check in fit evaluator: 25.4 mm cylinder probe through every opening at any angle must not reach face surface; physical 1 in dowel test"
+    status: verified_current
+    design_note: "See HELM-FG-03 (Society stricter: dowel must not enter any opening)."
+
+  - id: HELM-FG-03
+    category: face_guard_openings
+    applies_to: both
+    text: "Face guards must prevent a 1 inch (25.4 mm) diameter dowel from entering into any of the face guard openings."
+    text_type: quote
+    quantitative: [{quantity: max_inscribed_circle_of_any_face_guard_opening, value: 25.4, unit: mm, comparator: "<"}]
+    source_id: SCA-AC-RATTAN-2026
+    section: "12.4.3.1"
+    verification_method: "geometric check in fit evaluator: largest inscribed circle of every aperture (incl. eye slots, breaths) < 25.4 mm; physical go/no-go 1 in dowel"
+    status: verified_current
+    design_note: "Society inspection 27.3.6.2(b): 'Check the face guard and eye slots do not have openings greater than 1 inch (25.4 mm) that would allow a weapon to penetrate.' Effectively caps eye-slot/aperture minor width below 25.4 mm. Applies in Lochac unless a variance exists (none found)."
+
+  - id: HELM-FG-04
+    category: face_guard_bars
+    applies_to: both
+    text: "Bars used in the face guard must be steel of not less than 4.76mm (3/16 in) in diameter, or equivalent. If the gap between supporting cross-bars is less than 50.8mm (2 in), 3.18mm (1/8 in) diameter bars may be used."
+    text_type: quote
+    quantitative:
+      - {quantity: bar_diameter_min, value: 4.76, unit: mm, comparator: ">="}
+      - {quantity: bar_diameter_min_if_crossbar_gap_lt_50.8mm, value: 3.18, unit: mm, comparator: ">="}
+      - {quantity: crossbar_gap_threshold_for_small_bars, value: 50.8, unit: mm, comparator: "<"}
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.4"
+    verification_method: "measure bar diameter with calipers; measure unsupported span between cross-bars in CAD"
+    status: verified_current
+    design_note: "Society 12.4.3.3: 'at least 3/16 inch (4.8 mm) ... If the span between crossbars is less than 2 inches (50.8 mm), you can use 1/8 inch (3.2 mm)'. No rule addresses non-round (plate/laser-cut) webs except via 'or equivalent' - see rules_matrix.md."
+
+  - id: HELM-FG-05
+    category: face_guard_bars
+    applies_to: both
+    text: "Bars: Used in the visor or faceplate of helms, bars shall be mild steel a minimum of 3/16 inch (4.5mm) in diameter, or the equivalent. If the distance between crossbars is 2 inches (50.8mm) or less, 1/8 inch (3.2mm) bars may be used."
+    text_type: quote
+    quantitative:
+      - {quantity: bar_diameter_min_glossary, value: 4.5, unit: mm, comparator: ">="}
+      - {quantity: crossbar_distance_threshold_glossary, value: 50.8, unit: mm, comparator: "<="}
+    source_id: LOCHAC-GLOSSARY
+    section: "Glossary - Bars"
+    verification_method: "n/a (definition)"
+    status: needs_confirmation
+    design_note: "Internal inconsistency: 4.5 mm vs 4.76 mm (3/16 in = 4.7625 mm; 4.5 mm is a mis-conversion) and '<=2 in' vs '<2 in'. Society glossary says 4.8 mm and '2 inches or less' vs Society 12.4.3.3 'less than 2 inches'. Design to >=4.76 mm and span strictly < 50.8 mm."
+
+  - id: HELM-FG-06
+    category: face_guard_attachment
+    applies_to: both
+    text: "All face guards must be attached and secured closed in such a way that there is minimal chance that they will become detached or come open in normal combat use."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.5"
+    verification_method: "marshal inspection; pull/impact test of visor latch and pivots"
+    status: verified_current
+    design_note: "Society 12.4.3.4 (movable visor) same substance."
+
+  - id: HELM-FG-07
+    category: face_guard_attachment
+    applies_to: both
+    text: "Face guard bars or screening should not attach to the interior of the helm unless of structurally superior design and workmanship."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.6"
+    verification_method: "marshal inspection"
+    status: needs_confirmation
+    design_note: "Still in Lochac v3.4; REMOVED from Society rules in June 2025 ('there are valid and sound ways to do so'). Prefer grille mounted on the exterior of the face opening, or document a structurally superior interior mount."
+
+  - id: HELM-FG-08
+    category: face_guard_screening
+    applies_to: both
+    text: "Where screening itself is not equivalent to 1.6mm steel, it must be underlain by a legal plate or bar grille face guard that would meet the requirements for a legal face guard if the screening were removed. This rule applies to permanently attached screening and removable screening."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.3"
+    verification_method: "fit evaluator: run face-guard checks with screening removed; marshal inspection"
+    status: verified_current
+    design_note: "Only place either source names a 'plate ... grille face guard' - plate grilles are recognised as a face guard type. No Society equivalent."
+
+  - id: HELM-FG-09
+    category: face_guard_standoff
+    applies_to: both
+    text: "Verify that the faceguard will not hit the fighter's face by putting your hand on the front of the helm, and have the fighter push against it. A gentle touch of the tip of the nose to the face guard at maximum pressure is undesirable, but not grounds to disqualify the helm."
+    text_type: quote
+    quantitative: null
+    source_id: SCA-AC-RATTAN-2026
+    section: "27.3.6.2(c)"
+    verification_method: "fit evaluator: face-to-grille clearance under padding compression; marshal push test"
+    status: verified_current
+    design_note: "Marshal inspection procedure (Society). Supports designing nose/face standoff allowing for liner compression."
+
+  # ---------------- Neck / gorget ----------------
+  - id: HELM-NECK-01
+    category: neck_gorget
+    applies_to: both
+    text: "During typical combat situations including turning the head, lifting the chin etc, the neck, including the larynx, cervical vertebrae, and first thoracic vertebra must be covered by one or a combination of: (a) The helm; or (b) A gorget of rigid material padded with a minimum of 6mm of resilient material; or (c) A mail or heavy leather camail or aventail that hangs or drapes to absorb the force of a blow. If the camail or aventail lays against the larynx, cervical vertebrae, or first thoracic vertebra or can be pushed into contact with those areas by a blow from a weapon, that section must be padded with a minimum of 6mm of resilient material. (d) A collar of heavy leather lined with a minimum of 6mm of resilient material."
+    text_type: quote
+    quantitative: [{quantity: gorget_or_camail_padding_min, value: 6, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.7.1"
+    verification_method: "fit evaluator with head rotation/chin-lift poses: union of helm + gorget covers larynx, C1-C7, T1; marshal check with fighter turning/tilting head"
+    status: verified_current
+    design_note: >-
+      Society 12.4.5.1: (b) 'A gorget of rigid material' (no padding figure); (c) leather collar
+      11/64 in (4.4 mm)/11 oz + 1/4 in (6 mm) closed-cell foam; (d) camail padding 1/4 in (6 mm)
+      closed-cell foam where contact likely; ii strongly recommends leather+foam under mail.
+      Lochac 'rigid material' (glossary) = steel >=18 ga or aluminium >=0.075 in (1.9 mm) etc.;
+      Society 12.3 = steel >=1/20 in (1.27 mm) or aluminium >=5/64 in (1.89 mm). If the helm itself
+      covers the neck (e.g. great helm resting on shoulders), interior parts touching neck/body
+      need 12.7 mm padding under Society 12.4.2.9.
+
+  - id: HELM-NECK-02
+    category: neck_gorget
+    applies_to: both
+    text: "Rigid material: Steel of no less than 18 gauge, or aluminum of no less than 0.075 inch (1.9mm); other metals of sufficient thickness to give similar rigidity; high-impact-resistant plastics such as ABS or polyethylene of sufficient thickness; heavy leather hardened ..."
+    text_type: paraphrase
+    quantitative: [{quantity: rigid_steel_min (gorget etc.), value: 18, unit: gauge, comparator: ">="}]
+    source_id: LOCHAC-GLOSSARY
+    section: "Glossary - Rigid material"
+    verification_method: "micrometer"
+    status: verified_current
+    design_note: "Applies to gorgets/neck armour, NOT to helms (helms need 1.6 mm)."
+
+  # ---------------- Plumes / eyewear ----------------
+  - id: HELM-PLM-01
+    category: plume_mount
+    applies_to: armoured
+    text: "Helms worn by plumed participants must have a plume of a high-visibility colour extending at least 30cm vertically above the highest point of the helm. ... Plumes should attach to the rear or top of the helm."
+    text_type: quote
+    quantitative: [{quantity: plume_height_above_helm_top, value: 300, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.4.2.1, 7.4.2.5"
+    verification_method: "measure; marshal inspection"
+    status: verified_current
+    design_note: "Only relevant if offering a plume socket. 7.4.2.2: no plumes in war combat for armoured combatants/non-combatants. A plume socket must not create an interior projection (HELM-INT-01)."
+
+  - id: HELM-EYE-01
+    category: eyewear
+    applies_to: both
+    text: "The lenses of all eyewear must be shatterproof industrial safety glass or plastic. Ordinary glass lenses are prohibited."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.6.1-7.6.2"
+    verification_method: "marshal inspection"
+    status: verified_current
+    design_note: "Fit evaluator should allow spectacle clearance if supported."
+
+  # ---------------- Missile / combat archery ----------------
+  - id: HELM-MSL-01
+    category: missile_screening
+    applies_to: missile
+    text: "In scenarios involving missile combat using arrows or bolts, all openings in the face guard larger than 5mm across must be covered by well-secured screening."
+    text_type: quote
+    quantitative: [{quantity: max_uncovered_face_guard_opening (arrow/bolt scenarios), value: 5, unit: mm, comparator: "<="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.7"
+    verification_method: "geometric check in fit evaluator: inscribed dimension of every uncovered opening <= 5 mm in missile configuration; marshal inspection"
+    status: verified_current
+    design_note: "Lochac-only (no Society screening rule). Mandatory in Lochac for arrows/bolts per LOCHAC-CA-EXEMPTION. Not required for tennis-ball/javelin-only scenarios by this wording."
+
+  - id: HELM-MSL-02
+    category: missile_screening
+    applies_to: missile
+    text: "(a) Perforated steel no less than 1.6mm thick. Perforations will be no more than 5 mm, with less than 50% open surface area."
+    text_type: quote
+    quantitative:
+      - {quantity: perforated_steel_thickness, value: 1.6, unit: mm, comparator: ">="}
+      - {quantity: perforation_size, value: 5, unit: mm, comparator: "<="}
+      - {quantity: open_area_fraction, value: 50, unit: percent, comparator: "<"}
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.7(a), Figure 7.3"
+    verification_method: "CAD open-area calculation; caliper on hole size; micrometer on sheet"
+    status: verified_current
+    design_note: "Fig 7.3 examples captioned '4mm Holes, 50% Open area' and '5mm Holes, 50% Open area' - captions say 50% while rule says <50%; design to <50%."
+
+  - id: HELM-MSL-03
+    category: missile_screening
+    applies_to: missile
+    text: "(b) Stout woven steel mesh of minimum 1.6mm wire with openings of no more than 5mm. (c) Crimsafe brand security mesh. ... (d) With the exception of \"Crimsafe\" noted above, window screen or galvanised hardware cloth is unacceptable for use as screening. (e) 12kg fencing mask mesh (f) Other mesh which will not significantly flex, spread apart, or deform under pressure of 12 kg applied by a standard rapier mask tester repeatedly to any single point. (g) Maille used for screening must not have openings greater than 5mm."
+    text_type: quote
+    quantitative:
+      - {quantity: woven_mesh_wire_diameter, value: 1.6, unit: mm, comparator: ">="}
+      - {quantity: woven_mesh_opening, value: 5, unit: mm, comparator: "<="}
+      - {quantity: mesh_punch_test_load, value: 12, unit: kg, comparator: "no significant deformation"}
+      - {quantity: maille_screen_opening, value: 5, unit: mm, comparator: "<="}
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.7(b)-(g)"
+    verification_method: "caliper; rapier mask punch tester at 12 kg; marshal inspection"
+    status: verified_current
+    design_note: "Fig 7.3(c) example: '1.6mm Wire Mesh, 5mm Spacing, 57% Open Area' (open-area limit applies to perforated plate only)."
+
+  - id: HELM-MSL-04
+    category: missile_screening
+    applies_to: missile
+    text: "All screening must be attached and secured in such a way that there is minimal chance that it will become detached in normal combat use. It must be secured against sideways movement, and vertical."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-FH-WIKI
+    section: "7.5.8"
+    verification_method: "marshal inspection; push/shear test of screen mounting"
+    status: verified_current
+    design_note: "Removable screen inserts need positive lateral and vertical retention."
+
+  - id: HELM-MSL-05
+    category: missile_screening
+    applies_to: missile
+    text: "\"Archery mesh\" as defined in the Lochac combat handbook is required to be used for all combatants and marshals on the melee field for this type of arrow to be in use."
+    text_type: quote
+    quantitative: null
+    source_id: LOCHAC-CA-EXEMPTION
+    section: "Exemption 1"
+    verification_method: "marshal inspection"
+    status: verified_current
+    design_note: "Explains why Lochac requires screening while Society relies on arrow APDs/blunts. Exemption valid only inside Lochac."
+
+  - id: HELM-MSL-06
+    category: missile_penetration
+    applies_to: missile
+    text: "All arrows and bolts must have a blunt designed to prevent the front end of the arrow or bolt from penetrating a legal face guard of a helm. ... Fletches must not project more than 1/2 inch (12.7 mm) from the shaft if they are less than 1 1/2 inch (38.1 mm) thick, so they cannot penetrate a face guard more than 1/2 inch (12.7 mm)."
+    text_type: quote
+    quantitative: [{quantity: allowed_weapon_penetration_into_legal_face_guard, value: 12.7, unit: mm, comparator: "<="}]
+    source_id: SCA-AC-RATTAN-2026
+    section: "16.1.2.4.1(1), 16.1.1.4(a); also 15.4.1, 27.4.2"
+    verification_method: "n/a for helm (weapon standard); optional fit-evaluator check of grille depth vs face clearance"
+    status: verified_current
+    design_note: "Weapon-side rule, but it assumes up to 12.7 mm intrusion into a 'legal face guard' (bar grill). Opinion: keep >12.7 mm (plus padding compression) between grille inner surface and face. Society has no helm screening requirement."
+
+  # ---------------- Non-combatant ----------------
+  - id: HELM-NC-01
+    category: non_combatant_helm
+    applies_to: missile
+    text: "Helms worn by non-combatants must be constructed according to the standards set out above, with the sole exceptions that they may be constructed from 1.3mm (18ga) steel and have fewer bars underlying permanently attached screening. Helms constructed of 1.3mm steel must be clearly and permanently marked as marshals' helms with a large yellow cross on the rear of the helm."
+    text_type: quote
+    quantitative: [{quantity: non_combatant_helm_steel_min, value: 1.3, unit: mm, comparator: ">="}]
+    source_id: LOCHAC-FH-WIKI
+    section: "7.15.2.2-7.15.2.4"
+    verification_method: "micrometer; visual marking check"
+    status: verified_current
+    design_note: "Marshal-only variant; 7.15.2.1 requires screening per 7.5 during war combat with arrows. Society 12.9.1 only requires eye protection (ANSI Z87.1 glasses, fencing mask, or armoured-combat helm) for marshals."

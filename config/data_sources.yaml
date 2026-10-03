@@ -1,0 +1,397 @@
+# Data-source / access / licensing register for sca-helm
+# (fitting a family of steel helmet shells to adult heads, external geometry incl. soft tissue)
+#
+# Compiled: 2026-10-03.  Convention: every value either VERIFIED (checked against the
+# source document/file on 2026-10-03) or explicitly marked `unverified`. Nothing is invented;
+# unknown values are null with a note.
+# Currency conversions use ECB reference rates via api.frankfurter.app dated 2026-10-02:
+#   1 EUR = 1.6176 AUD; 1 USD = 1.4411 AUD; 1 NZD = 0.80872 AUD. Conversions are indicative only.
+#
+# Target population ("Lochac fighters"): adult SCA heavy-combat fighters in Australia/NZ,
+# mostly male but not exclusively, broad adult age range, mixed (predominantly European-ancestry,
+# unverified) ethnicity, often wearing arming caps/padding under the helmet.
+
+meta:
+  schema_version: 1
+  compiled: 2026-10-03
+  fx_rates_to_aud: {EUR: 1.6176, USD: 1.4411, NZD: 0.80872, date: 2026-10-02, source: "https://api.frankfurter.app/latest"}
+  status_values: [verified, partially_verified, unverified]
+
+sources:
+
+  # ---------------------------------------------------------------------------
+  - id: ansur2_2012
+    name: "ANSUR II - 2012 US Army Anthropometric Survey, public working databases"
+    status: verified
+    population: "US Army personnel (Regular Army, Army National Guard, Army Reserve), Oct 2010 - Apr 2012"
+    sample_size:
+      public_files: {male: 4082, female: 1986, total: 6068}      # verified by row count
+      full_survey: {male: 7435, female: 3922}                    # from TR15-007 abstract
+    age_range_years: [17, 58]                                    # verified from Age column (both sexes)
+    collection_date: "2010-10-04 to 2012-04-05"                  # MFR memo, 14 Apr 2017
+    sampling_method: >
+      Full survey was not representative. Public 'working databases' are stratified random
+      subsamples (separately per sex) matched on age, race/ethnicity and component to DMDC Army
+      census of 30 Sep 2011 (Reserve pooled with Guard); of 5 candidate draws, the one closest to
+      weighted parameter estimates was chosen (TR15-007 p.33). Effectively self-weighting for the
+      2011 Total Army; NO per-subject sampling-weight column is provided.
+    sampling_weights: >
+      None. 'Weightlbs' is SELF-REPORTED BODY WEIGHT in pounds (min 0 in male file = missing), and
+      'Heightin' is self-reported height; neither is a sampling weight. 'weightkg' is MEASURED body
+      mass in units of 0.1 kg (hectograms) despite its name.
+    exclusions: >
+      Acromion-wall depth dropped (93 of 94 measured dimensions released). Not otherwise documented
+      in the parts read (unverified). Female soldiers with braids/cornrows measured WITH hair for
+      head breadth, head circumference, head length, tragion-top of head (no significant mean
+      difference per report); buns/French braids were taken down.
+    measurement_definitions: "ANSUR II TR15-007 (Gordon et al. 2014) + MFR memo; manual anthropometry (calipers, tape)"
+    head_columns:   # exact CSV column names (identical in both files except ID column case)
+      headcircumference: "max circumference above ear attachment, tape just above brow ridges"
+      headlength: "glabella to opisthocranion, spreading caliper"
+      headbreadth: "max horizontal breadth above ear attachment, spreading caliper"
+      tragiontopofhead: "vertical distance R tragion to plane tangent to top of head, Frankfurt plane, beam caliper"
+      bitragionchinarc: "surface arc R-L tragion across chin, tape"
+      bitragionsubmandibulararc: "surface arc R-L tragion across submandibular landmark, tape"
+      bizygomaticbreadth: "max face breadth at zygia, spreading caliper"
+      mentonsellionlength: "menton to sellion, sliding caliper"
+      earbreadth: null
+      earlength: null
+      earprotrusion: null
+      interpupillarybreadth: "pupillometer; NOTE values 510-770 imply units of 0.1 mm although memo says mm (unverified)"
+      neckcircumference: null
+      neckcircumferencebase: null
+    head_columns_absent: [sagittal arc, bitragion coronal arc, bitragion frontal arc, head height/vertex-menton, minimum frontal breadth]
+    other_columns_of_use: [stature, weightkg, sittingheight, Gender, Age, DODRace, SubjectNumericRace, Ethnicity, Component, Branch, Installation, Date, SubjectsBirthLocation]
+    scan_coverage: none_public   # 3D head/foot/whole-body scans exist but are NOT public (privacy)
+    units: "mm (except weightkg = 0.1 kg; interpupillarybreadth apparently 0.1 mm - unverified)"
+    licence: "US Government work; MFR memo: 'reviewed and cleared for UNLIMITED PUBLIC RELEASE'; reports 'Approved for public release; distribution is unlimited'"
+    licence_decision: "Redistribution/local copy permitted -> raw CSVs stored unmodified in data/raw/ansur2/"
+    access: public
+    cost_aud: 0
+    landing_page: "https://www.openlab.psu.edu/ansur2/"
+    downloads:
+      - url: "https://tools.openlab.psu.edu/publicData/ANSUR_II_MALE_Public.csv"
+        http_status: 200
+        bytes: 2000794
+        rows: 4082
+        columns: 108
+        sha256: 0547aea0170e5293de519389981135e75803f02e6d40c77ace740decc0caac64
+        local_path: data/raw/ansur2/ANSUR_II_MALE_Public.csv
+        notes: "ID column 'subjectid'; contains one non-UTF-8 (Latin-1 0xE9) byte -> read with encoding latin-1"
+      - url: "https://tools.openlab.psu.edu/publicData/ANSUR_II_FEMALE_Public.csv"
+        http_status: 200
+        bytes: 976573
+        rows: 1986
+        columns: 108
+        sha256: ed7e800aa97a4d42f8286b988be2fe1883a2e789588169db959864b707d1757a
+        local_path: data/raw/ansur2/ANSUR_II_FEMALE_Public.csv
+        notes: "ID column 'SubjectId' (different case from male file)"
+      - url: "https://tools.openlab.psu.edu/publicData/ANSURII-TR15-007.pdf"
+        notes: "Methods & summary statistics report (7.3 MB); not stored"
+      - url: "https://tools.openlab.psu.edu/publicData/ANSURII-MFR.pdf"
+        notes: "Variable dictionary memo (14 Apr 2017); not stored"
+    note_wrong_url: "Filenames with spaces ('ANSUR II MALE Public.csv') under openlab.psu.edu/wp-content/... returned 404 / connection reset; use the tools.openlab.psu.edu URLs above."
+    observed_summary_mm:   # computed from downloaded files, mean (SD) [min-max]
+      male:   {headcircumference: "574.4 (16.0) [516-633]", headlength: "199.5 (7.0) [172-225]", headbreadth: "154.3 (5.5) [135-180]", tragiontopofhead: "131.1 (6.2) [110-150]"}
+      female: {headcircumference: "561.1 (19.4) [500-635]", headlength: "189.8 (7.4) [168-215]", headbreadth: "147.8 (5.2) [131-167]", tragiontopofhead: "126.5 (6.5) [105-148]"}
+    limitations_for_lochac: >
+      US military (fit, young-skewed, age <=58, ~1/3 female in public file only because of
+      separate files), US racial mix (large Black/Hispanic share) differs from AU/NZ; no scans;
+      no sagittal/coronal arcs so crown shape must be inferred; manual caliper values compress
+      hair/soft tissue slightly; no padding/arming cap allowance.
+
+  # ---------------------------------------------------------------------------
+  - id: ansur1_1988
+    name: "ANSUR (I) 1988 US Army Anthropometric Survey, public files"
+    status: partially_verified
+    population: "US Army personnel 1987-88"
+    sample_size: {male: 1774, female: 2208}   # verified by row count of public CSVs
+    collection_date: "1987-1988 (unverified exact dates)"
+    sampling_method: "Stratified Army sample (see TR89-044; not read in detail - unverified)"
+    exclusions: unverified
+    measurement_definitions: "Clauser et al. / Gordon et al. 1989 (TR89-044)"
+    head_columns: [HEAD_CIRC, HEAD_LNTH, HEAD_BRTH, BITR-CORONAL_ARC, BITR-CRINION_ARC, BITR-MINIMUM_FRNTAL_ARC, BITR_MENTON_ARC, BITR_SUBMANDIBULAR_ARC, BITR_SUBNASALE_ARC, BIZYGOMATIC_BRTH, MENTON_TO_NASAL_ROOT_DEP_LNTH, EAR_BRTH, EAR_LNTH, EAR_LNTH-ABOVE_TRAGION, EAR_PROTRUSION, INTERPUPILLARY_DIST]
+    head_columns_absent: [sagittal arc, tragion-top of head]
+    scan_coverage: none
+    units: "mm (unverified for all columns)"
+    licence: "US Government work, public release (unverified wording)"
+    access: public
+    cost_aud: 0
+    downloads:
+      - url: "https://tools.openlab.psu.edu/publicData/ansurMen.csv"
+        http_status: 200
+        bytes: 956191
+        sha256: bd7b4bc27db15e6131a44f17836228c131c73de9692794afc123aee2d2e9004e
+        stored: false
+      - url: "https://tools.openlab.psu.edu/publicData/ansurWomen.csv"
+        http_status: 200
+        bytes: 1181291
+        sha256: 74fb63a9efacd27000dbe3bb664f5dc261d0692a0c71b14a893deca041a12992
+        stored: false
+    limitations_for_lochac: "Old (1988), US military; useful mainly for bitragion coronal/crinion arcs absent from ANSUR II."
+
+  # ---------------------------------------------------------------------------
+  - id: niosh_2003_headface
+    name: "NIOSH 2003 Head-and-Face Anthropometric Survey of US Respirator Users (Zhuang & Bradtmiller 2005) - individual records"
+    status: verified
+    population: "US civilian workers who use respirators; 41 sites in 8 states"
+    sample_size: {total: 3997, male: 2543, female: 1454, scanned_subset_csv_rows: 946}
+    sample_size_notes: >
+      All-subjects CSV has 3997 records (+2 blank trailing rows). Methods PDF says 1,013 were
+      3-D scanned (San Diego, Houston); CDC page text says 947; scanned-subjects CSV has 946 rows.
+    collection_date: "2003"
+    sampling_method: >
+      Stratified, equal-cell design: 3 age (18-29, 30-44, 45-66) x 2 sex x 4 race (White, Black,
+      Hispanic, Other), target 166/cell (ISO 15535). Minorities deliberately oversampled; NIOSH
+      intended to re-weight by age/race to the workforce. No weight column in the CSV.
+      (Data dictionary codes AGEGRP 1 as 17-29.)
+    exclusions: "3994 of 3997 used for PCA (missing face width / IPD); NECKCIRC added mid-study (many -9999)"
+    measurement_definitions: "Clauser et al.; manual calipers/tape; Data dictionary in zip (pdfs/DataDictionary-508.pdf)"
+    head_columns: [HEADCIRC, BITCOR, BITFRONT, BITSUBN, BITCHIN, NECKCIRC, HEADBR, HEADLTH, MINFRBR, MAXFRBR, BIZYGOBR, BIGONLBR, NROOTBR, NOSEBR, LIPLTH, SUBNASAL, MENSELL, NOSEPRO, INTPUPBR]
+    other_columns: [SUBNO, SEX, AGEGRP, RACEGRP, WEIGHTKG, STATURE]
+    head_columns_absent: [sagittal arc, tragion-top of head / head height]
+    missing_code: "-9,999 (thousands separators present in some numeric fields, e.g. '1,689')"
+    scan_coverage: none   # individual 3D scans are NOT in the download; only the 5 averaged headforms
+    units: "mm; WEIGHTKG kg"
+    licence: "No explicit licence stated on data.cdc.gov (license: null). US federal government work - presumed public domain (17 USC 105) - unverified"
+    access: public
+    cost_aud: 0
+    landing_page: "https://archive.cdc.gov/www_cdc_gov/niosh/npptl/topics/respirators/headforms/default.html"
+    dataset_page: "https://data.cdc.gov/dataset/NIOSH-Anthropometric-Data-and-ISO-Digital-Headform/c2hx-eeis/about_data  (redirect from https://www.cdc.gov/niosh/data/datasets/rd-10130-2020-0/default.html)"
+    downloads:
+      - url: "https://data.cdc.gov/api/views/c2hx-eeis/files/4b4cb188-f59c-490a-8ab1-67528503554a?filename=rd-10130-2020-0.zip"
+        http_status: 200
+        bytes: 68582780
+        sha256: f8633144d49cfd64aea2305edf8244d25d32bf12af596456e00f91ae1d5c5e8b
+        stored: false
+        contents:
+          - {path: datasets/RespiratorUsersData-all-subjects.csv, bytes: 408906, sha256: 0f70a4081151da845b8c4de897691ea9502d5ca682bf58f3dcc41a86c5a1a9f7}
+          - {path: datasets/RespiratorUsers-scanned-subjects.csv, bytes: 87837, sha256: 656e95d67b96ddc6de8b6d86f0da4bec784f823baaf883696f8af73bd9be1cc1}
+          - {path: pdfs/DataDictionary-508.pdf}
+          - {path: pdfs/MaterialsMethodsAnthropometricData-508.pdf}
+          - {path: pdfs/MaterialsMethodsISODigitalHeadforms-508.pdf}
+    note_previous_statement: "Archived CDC page says 2D/3D data 'available ... for those who complete the data use agreements'; the current data.cdc.gov zip contains the individual 2D table openly (no DUA encountered)."
+    observed_summary_mm:
+      male:   {HEADCIRC: "576.1 (17.5) [520-639]", HEADLTH: "197.4 (7.5)", HEADBR: "153.1 (6.0)", BITCOR: "350.7 (14.1)"}
+      female: {HEADCIRC: "558.7 (20.7) [475-654]", HEADLTH: "187.6 (7.6)", HEADBR: "147.0 (5.8)", BITCOR: "341.0 (15.6)"}
+    limitations_for_lochac: >
+      US civilian workers (broader age to 66 and body size than military - closer to Lochac than
+      ANSUR in that respect); race-stratified not proportional; face-focused dimension set, only
+      HEADCIRC/HEADLTH/HEADBR/BITCOR describe the helmet-bearing cranium; age given only in 3 bands.
+
+  # ---------------------------------------------------------------------------
+  - id: niosh_iso_digital_headforms
+    name: "NIOSH / ISO 16900-5 digital headforms (small, medium, large, long/narrow, short/wide)"
+    status: verified
+    population: "Derived from NIOSH 2003 survey scans (5 subjects averaged per size category)"
+    sample_size: {headforms: 5, subjects_per_headform: 5}
+    collection_date: "2003 scans; STL headers dated Feb-27-2014 (Ls-Prepost)"
+    sampling_method: "Subjects with digital PC1/PC2 within 1 SD of category mean of 10 facial dims; aligned (Frankfurt + symmetry), averaged, mirrored"
+    scan_coverage: full_head_synthetic
+    scan_coverage_notes: >
+      Full closed head + neck. Face is averaged scan data; SCALP IS CONSTRUCTED (subjects wore wig
+      caps/had hair; bald subjects' contours used, scaled to category mean head length/breadth);
+      ears are generic third-party surfaces (Direct Dimensions Inc.) placed at average location;
+      neck sized to category neck circumference; 5 mm hole at mouth; symmetric.
+    formats: [STL (ASCII), IGS (IGES)]   # PLY mentioned on archive page but NOT in current zip
+    files:
+      - {name: small_symmetry.stl, triangles: 252263, bbox_extent_mm_xyz: [159.8, 254.3, 210.9], sha256: fe528ebee3b4aa7a80af85c3be6bcde4d69bce94dd0c9e0f64873b446f391362}
+      - {name: medium_symmetry.stl, triangles: 306692, bbox_extent_mm_xyz: [172.7, 285.6, 232.9], sha256: 3f138e3dad709ffb7e923349fa55d26caecf38e3ada3ee62b426fd3e0df4e34e}
+      - {name: large_symmetry.stl, triangles: 357482, bbox_extent_mm_xyz: [182.1, 302.0, 269.7], sha256: 45b23d38374759db3ad34a103937c6c7f450390da60c7975d15a455f83c20188}
+      - {name: Long_narrow_symmetry.stl, triangles: 302513, bbox_extent_mm_xyz: [166.0, 278.4, 230.8], sha256: 1c91215f55f870a1b35636b914db9c2803f0556264f576d1e77922323bbf6db5}
+      - {name: Short_Wide_symmetry.stl, triangles: 283353, bbox_extent_mm_xyz: [171.5, 262.7, 224.8], sha256: 4aba2459a48ebe84d6c4564e05ec5cc56b08b246d4a6ba614a7ef412cdd0d2c4}
+    bbox_notes: "Axis convention not documented; extents include neck. Units assumed mm (unverified)."
+    units: "mm (assumed)"
+    licence: "As niosh_2003_headface: no explicit licence; US Gov work presumed public domain; ear surfaces are third-party origin (status unverified)"
+    access: public
+    cost_aud: 0
+    download_url: "same zip as niosh_2003_headface (ISOdigital/ folder)"
+    limitations_for_lochac: "Only 5 averaged, symmetric shapes; scalp shape is constructed not measured -> weak for cranial vault fitting; good for face/visor clearance and as template meshes."
+
+  # ---------------------------------------------------------------------------
+  - id: headspace_york
+    name: "Headspace dataset (University of York) - 3dMD full-head scans"
+    status: partially_verified
+    population: "UK volunteers (recruited at York; demographics: age, gender, self-declared ethnicity, eye/hair colour, beard/moustache, spectacles)"
+    sample_size: {scans: 1519, used_in_LYHM: 1212}
+    collection_date: unverified
+    sampling_method: "Convenience sample (unverified)"
+    exclusions: unverified
+    scan_coverage: full_head   # subjects wore tight latex caps to suppress hair
+    formats: ["OBJ + MTL + BMP texture (>80% textured)", "3D landmarks (automatic)", "subject metadata"]
+    download_size: "38 GB .tar.gz (auxiliary packages 137 MB - 30 GB)"
+    units: unverified
+    licence: "Free for university-based NON-COMMERCIAL research only; user agreement signed by verifiable academic staff (students via supervisor); distributed via Google Drive"
+    access: restricted_academic
+    cost_aud: 0
+    url: "https://www-users.york.ac.uk/~np7/research/Headspace"
+    agreement_form: "https://www-users.york.ac.uk/~np7/research/LYHM/  (same agreement as LYHM; contact nick.pears@york.ac.uk)"
+    limitations_for_lochac: >
+      Best openly-described full-cranium scan set, but access requires a university academic
+      signatory and forbids commercial use - a hobby/commercial helmet project likely does not
+      qualify unless run through a university collaborator. Latex cap still adds some thickness.
+      UK population (closer ancestry mix to AU/NZ than US military - unverified).
+
+  - id: lyhm
+    name: "Liverpool-York Head Model (LYHM) 3D morphable model"
+    status: partially_verified
+    population: "Headspace subjects"
+    sample_size: {subjects: ">1200 (1212), even male/female split"}
+    scan_coverage: full_head_model
+    formats: ["model files + MATLAB code (several builds)"]
+    licence: "Non-commercial research and education only; no commercial exploitation; cite Dai et al. IJCV 2019"
+    access: restricted_academic
+    cost_aud: 0
+    url: "https://www-users.york.ac.uk/~np7/research/LYHM"
+    limitations_for_lochac: "Same as Headspace; a shape space (mean + PCs) rather than individuals."
+
+  - id: flame
+    name: "FLAME head model (MPI-IS) incl. FLAME 2023 Open"
+    status: partially_verified
+    population: "Trained on >33,000 scans incl. CAESAR heads (original FLAME); training data of 2023 Open version not stated on site (unverified)"
+    scan_coverage: full_head_model   # cranium present but scalp in CAESAR-derived data affected by hair (unverified)
+    licence: "FLAME 2023 Open: CC-BY-4.0 (per site); earlier versions: academic non-commercial licence"
+    access: registration
+    cost_aud: 0
+    url: "https://flame.is.tue.mpg.de/"
+    limitations_for_lochac: "Designed for faces/expressions; cranial vault accuracy with hair unverified; registration required. Useful as an openly licensed template topology."
+
+  # ---------------------------------------------------------------------------
+  - id: caesar_wear
+    name: "CAESAR (Civilian American and European Surface Anthropometry Resource), sold via WEAR"
+    status: partially_verified
+    population: "Civilians aged ~18-65 from North America, Italy and the Netherlands (age range unverified)"
+    sample_size: "several thousand (exact counts not verified here)"
+    collection_date: "c. 1998-2000"
+    scan_coverage: full_body_incl_head   # whole-body laser scans; head resolution low and hair not compressed (unverified)
+    formats: "3-D scans with 3-D landmarks + measurement tables; scans NOT registered, varying point counts; >33 GB on drive"
+    licence: "WEAR page: 'Once you have it you can do anything you like with it' (commercial use permitted)"
+    access: paid
+    cost: {EUR_nonmember: 1095, EUR_member: 595, includes: "~EUR 95 express post from Australia", AUD_nonmember_indicative: 1771, AUD_member_indicative: 962}
+    url: "https://bodysizeshape.com/page-1855750"
+    limitations_for_lochac: "Whole-body scanner head detail is coarse and hair is not capped; older (2000); US/EU."
+
+  - id: size_korea
+    name: "Size Korea (KATS) incl. 3D head scans"
+    status: unverified
+    population: "Korean population"
+    sample_size: ">8,500 3D head scans since 2004 (secondary source)"
+    scan_coverage: full_head (reported)
+    licence: unverified
+    access: "unverified (Korean-language portal sizekorea.kr; purchase/registration procedure and price not found)"
+    cost_aud: null
+    url: "https://sizekorea.kr"
+    limitations_for_lochac: "East Asian head shape (rounder/broader) - poor proxy for majority-European-ancestry AU/NZ fighters."
+
+  - id: sizeusa
+    name: "SizeUSA ([TC]2) 3D body scan survey"
+    status: unverified
+    population: "US adults, ~10,800 subjects (secondary source), c. 2002-2003"
+    scan_coverage: full_body (head detail unverified; body-scanner data, not designed for heads)
+    licence: commercial
+    access: paid (price on request)
+    cost_aud: null
+    url: "https://www.tc2.com/size-usa.html"
+    limitations_for_lochac: "Apparel-oriented; head measures/scans of doubtful utility; price unknown."
+
+  - id: facebase_3dfn
+    name: "FaceBase 3D Facial Norms (3DFN)"
+    status: partially_verified
+    population: "US, 4 sites, ages 3-40, n=2454, screened for craniofacial conditions"
+    scan_coverage: face   # 3dMD face surfaces; some caliper head measures
+    licence: "Data use certification; individual-level access limited to IRB-approved non-exempt human-subjects research on facial shape / craniofacial defects"
+    access: restricted
+    cost_aud: 0
+    url: "https://facebase.org/facial_norms/"
+    limitations_for_lochac: "Face only, age <=40, use restricted to craniofacial research - not suitable."
+
+  # ---------------------------------------------------------------------------
+  - id: adf_awas_2012
+    name: "Australian Warfighter Anthropometry Survey (AWAS) 2012 / DSTO-TR-3006 Preliminary Anthropometry Standard for Australian Army Equipment Evaluation"
+    status: partially_verified
+    population: "ADF Army personnel (male and female)"
+    sample_size: unverified
+    collection_date: "2012"
+    sampling_method: unverified
+    measurements: "85 measures surveyed; report gives summary values for 84 dimensions + boundary manikins (head dimensions included - unverified)"
+    scan_coverage: "full-body scans (Vitus XXL) collected; not public"
+    licence: "Report approved for public release (Aug 2014); individual data not public (unverified)"
+    access: "report public (DTIC ADA610792 - returned HTTP 403 to this agent); raw data restricted to Defence"
+    cost_aud: 0
+    url: "https://apps.dtic.mil/sti/pdfs/ADA610792.pdf ; https://www.dst.defence.gov.au/node/1535"
+    limitations_for_lochac: "Only Australian military head data found; summary statistics only. Valuable for checking ANSUR/NIOSH head circumference distributions against an Australian population (needs manual retrieval of PDF)."
+
+  - id: rmit_cyclists_2015
+    name: "RMIT 3D head scans of Australian cyclists (Perret-Ellena et al. 2015) and derived digital headforms (Applied Ergonomics)"
+    status: partially_verified
+    population: "Melbourne cyclists, 176 male / 46 female, age 34.6 +/- 12.5"
+    sample_size: 222
+    collection_date: "c. 2014 (unverified)"
+    scan_coverage: full_head (handheld white-light scanner, with Hair Thickness Offset correction)
+    licence: "Papers only; raw scans not published (unverified) - contact authors"
+    access: "by request to authors (unverified)"
+    url: "https://research-repository.rmit.edu.au/articles/conference_contribution/3D_anthropometric_investigation_of_head_and_face_characteristics_of_Australian_cyclists/27393516"
+    limitations_for_lochac: "Closest population match (Australian adults, mostly male, broad age) with full-head shape; small n; access uncertain."
+
+  - id: size_australia
+    name: "Size Australia / Size Oz / Target-Alvanon 2012 scan survey"
+    status: partially_verified
+    notes: "Government 'Size Oz' pilot (SCALE, 2006) not funded; Target Australia/Alvanon 2012 retail millimetre-wave body survey (up to 20,000) - proprietary, body-shape oriented, head data not known. No accessible national head dataset found."
+    access: unavailable
+    scan_coverage: full_body (proprietary; head unverified)
+
+  # ---------------------------------------------------------------------------
+  - id: en960_2006
+    name: "EN 960:2006 Headforms for use in the testing of protective helmets (BS EN 960:2006 identical)"
+    status: partially_verified
+    edition: "EN 960:2006, published 2006-06-27/28, supersedes EN 960:1994 (+A1:1998); CEN/TC 158; 2-yearly review enquiry started 2026-07-15; BS EN 960 'under review'"
+    history: "Derived from ISO/DIS 6220:1983 (never published as IS; withdrawn) and ISO/R 1511:1970"
+    content: >
+      Full, three-quarter and half headforms; size designation = nominal circumference in mm;
+      sizes 445 to 645 in 10 mm steps (21 sizes); Table 1 gives h, x, y, z reference dimensions
+      and mass ranges; normative Annex A gives spherical coordinates (radius vs vertical angle
+      -65..+90 deg and horizontal angle 0..180 deg in 15 deg steps) about point R for each size;
+      informative Annex B gives radius equations for sizes 495-645.
+    table1_h_mm_from_public_preview: {445: 108.5, 455: 110.6, 465: 112.7, 475: 114.8, 485: 116.9, 495: 119.0, 505: 121.1, 515: 123.2, 525: 125.3, 535: 127.4, 545: 129.5, 555: 131.6, 565: 133.7, 575: 135.8, 585: 137.9, 595: 140.0, 605: 142.1, 615: 144.2, 625: 146.3, 635: 148.4, 645: 150.5}
+    table1_mass_g_preview: "3100 +/- 100, 4100 +/- 120, 4700 +/- 140, 5600 +/- 160, 6100 +/- 180 and 1970 +/- 75 appear; assignment to size bands ambiguous in text extraction - unverified"
+    cad_available: "No official CAD found; geometry must be built from Annex A coordinates (commercial headform makers sell physical forms)"
+    scan_coverage: "geometric surrogate (smooth, no soft tissue variation)"
+    licence: "Copyright CEN/BSI; purchase required; coordinates may not be redistributed"
+    access: paid
+    cost:
+      - {vendor: "iTeh (SIST EN 960:2006)", USD: 94.47, AUD_indicative: 136, verified: true}
+      - {vendor: "Standards NZ (BS EN 960:2006 PDF)", NZD: 605.25, AUD_indicative: 489, verified: false}
+      - {vendor: "Austrian Standards (ONORM EN 960)", EUR_ex_VAT: 195.77, AUD_indicative: 317, verified: false}
+      - {vendor: "BSI Knowledge / Standards Australia store", price: unverified}
+    urls: ["https://standards.iteh.ai/catalog/standards/cen/c5c9c77c-c6ed-472d-81a4-733a056b5093/en-960-2006", "https://knowledge.bsigroup.com/products/headforms-for-use-in-the-testing-of-protective-helmets"]
+    limitations_for_lochac: "Idealised test headforms, not population shape; useful for test-rig compatibility and size labelling."
+
+  - id: iso_6220
+    name: "ISO/DIS 6220:1983 Headforms for use in the testing of protective helmets"
+    status: partially_verified
+    notes: "Draft only, withdrawn; superseded in practice by EN 960. Not purchasable as a current standard."
+    access: unavailable
+
+  - id: asnzs_2512_1_2009
+    name: "AS/NZS 2512.1:2009 Methods of testing protective helmets - Definitions and headforms"
+    status: verified
+    edition: "Published 2009-04-07; supersedes AS/NZS 2512.1:1998; status Current (Standards Australia store, checked 2026-10-03); reported withdrawn in NZ (unverified)"
+    content: "Defines headforms A-Q and AA (dimensions/sizing, materials) used by AS/NZS helmet standards"
+    cad_available: "None found"
+    licence: "Copyright Standards Australia; purchase required"
+    access: paid
+    cost: {AUD_web_reader_1_user_incl_GST: 154.97, AUD_hardcopy_incl_GST: 172.02}
+    url: "https://store.standards.org.au/product/as-nzs-2512-1-2009"
+    limitations_for_lochac: "Relevant if SCA helmets are ever compared against AU test headforms; not population shape data."
+
+  # ---------------------------------------------------------------------------
+  - id: pubmed_1996936
+    name: "Sippo AC, Belyavin AJ. Determining aircrew helmet size design requirements using statistical analysis of anthropometric data. Aviat Space Environ Med 1991;62(1):67-74. PMID 1996936"
+    status: verified
+    population: "RAF aircrew; data from 'An Anthropometric Survey of 2000 Royal Air Force Aircrew, 1970/1971'"
+    sample_size: "~2000 (survey title)"
+    methods: "Head length, head breadth and pupil-vertex height plotted per subject; minimum number of helmet sizes computed for 'reasonable quality of fit'"
+    numerical_conclusions: "With nine sizes, 93.5% of subjects grouped around the population mean had a reasonable fit; fitting more would need many more sizes or relaxed fit quality"
+    access: "abstract public (PubMed); full text paywalled (unverified)"
+    url: "https://pubmed.ncbi.nlm.nih.gov/1996936/"
+    relevance: "Methodological precedent: 3-D (L, B, height) size-roll allocation; suggests ~9 sizes for ~93% coverage of a male military population at aviation fit tolerance; steel SCA helmets with padding may tolerate coarser sizing (unverified)."

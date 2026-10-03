@@ -1,0 +1,6 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+outputs/**/crown_eval.npz
+# restricted datasets must never be committed; list them here when acquired
+data/raw/restricted/

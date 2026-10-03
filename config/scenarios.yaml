@@ -1,0 +1,29 @@
+# Sensitivity scenarios: each is a set of overrides on config/default.yaml.
+# All are GEOMETRIC SCENARIOS, not measured results.
+baseline:
+  label: default assumptions
+  overrides: {}
+liner_depth_25:
+  label: max total liner depth 25 mm
+  overrides: {liner: {max_liner_depth: 25.0}}
+liner_depth_35:
+  label: max total liner depth 35 mm
+  overrides: {liner: {max_liner_depth: 35.0}}
+padding_compressed_basis:
+  label: 12.7 mm minimum applied to the compressed (installed) thickness
+  overrides: {liner: {min_padding_basis: compressed}}
+pressure_band_wide:
+  label: wider acceptable contact-pressure band (0.5-20 kPa)
+  overrides: {liner: {contact_pressure_kPa: [0.5, 20.0]}}
+tolerance_loose:
+  label: manufacturing tolerance 3 mm, hair/cap allowance 5 mm
+  overrides: {shell: {manufacturing_tolerance: 3.0}, head_model: {hair_allowance: 5.0}}
+tolerance_tight:
+  label: manufacturing tolerance 0.75 mm, hair/cap allowance 1.5 mm
+  overrides: {shell: {manufacturing_tolerance: 0.75}, head_model: {hair_allowance: 1.5}}
+female_30:
+  label: 30% female denominator
+  overrides: {population: {female_fraction: 0.30}}
+shape_prior_wide:
+  label: doubled spread on unmeasured shape priors
+  overrides: {head_model: {f_front: [0.50, 0.04], z_equator: [32.0, 10.0], n_vertical: [2.3, 0.3]}}

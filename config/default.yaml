@@ -1,0 +1,127 @@
+# Default scenario for the SCA helm fit/coverage toolchain.
+#
+# Every number here carries a `status` in the comments:
+#   [RULE]        from the rules register (config/rules_register.yaml)
+#   [DATA]        derived from a recorded data source
+#   [ASSUMPTION]  engineering placeholder chosen for this exploratory run; replace with
+#                 measurement before relying on any result that is sensitive to it
+#   [DECISION]    a design/process decision, not a fact
+#
+# Units: millimetres, newtons, kPa, degrees, AUD. Frame: x lateral (+ = wearer's left),
+# y anterior, z superior; origin at the mid-point between the two tragions, z = 0 is the
+# horizontal plane through tragion (a proxy for the Frankfort plane).
+
+units: {length: mm, pressure: kPa, angle: deg, currency: AUD}
+seed: 20261003
+
+population:
+  target_coverage: 0.90                 # [DECISION] spec section 1
+  # Denominator proxy: ANSUR II (US Army 2012) re-weighted by sex. Lochac fighter sex mix is
+  # unknown; 0.15 female is an [ASSUMPTION] to be replaced by a marshal-roster count.
+  female_fraction: 0.15
+  max_participants: 3000                # [DECISION] subsample for run time; stratified by sex
+  validation_fraction: 0.30             # [DECISION] participant-level held-out split
+
+head_model:
+  # Shape parameters ANSUR II does not measure. All [ASSUMPTION] priors (mean, sd) to be
+  # replaced from 3-D scans. Each is sampled independently: correlation is unknown, which is
+  # the main reason this is labelled a surrogate.
+  f_front: [0.50, 0.020]     # fraction of head length anterior to tragion
+  z_equator: [32.0, 5.0]     # height of max length/breadth plane above tragion
+  n_vertical: [2.3, 0.15]    # superquadric vertical exponent (2 = ellipsoidal)
+  c_low_frac: [0.55, 0.05]   # depth of occiput below equator as a fraction of tragion-vertex height
+  pupil_z: [17.0, 3.0]       # pupil height above tragion plane
+  sellion_z_minus_pupil: [4.0, 2.0]
+  nose_protrusion: [22.0, 3.0]   # pronasale anterior to sellion
+  pupil_setback: [12.0, 3.0]     # pupil posterior to sellion
+  chin_setback: [12.0, 6.0]      # menton posterior to sellion
+  ear_protrusion_default: [21.0, 3.0]  # used only if the data source lacks it
+  hair_allowance: 3.0        # [ASSUMPTION] hair + arming cap, subtracted from all clearances
+  sample_spacing: 7.0        # head surface sample spacing (mm); bound reported per run
+
+shell:
+  material: {name: mild steel, thickness: 2.0, density_g_cm3: 7.85}   # [DECISION] spec s10; see rules for minimum
+  seam_bead_height: 1.5      # [ASSUMPTION] inner weld bead after grinding, sagittal seam
+  seam_bead_halfwidth: 4.0
+  manufacturing_tolerance: 1.5   # [ASSUMPTION] inner-surface deviation after forming/welding
+  measurement_uncertainty: 1.0   # [ASSUMPTION] head measurement repeatability
+  min_curvature_radius: 25.0     # [ASSUMPTION] press-compatible minimum radius
+  n_vertical: 2.2                # shell-family shape exponents [DECISION]
+  sample_spacing: 5.0            # shell inner-surface sampling for distance queries
+  plane_neighbours: 24           # tangent planes per distance query (see fit.py)
+  field_spacing: 2.0             # distance-field grid (mm); exact re-check near thresholds
+  field_eps: 0.1                 # minimum re-check band (mm); raised to 3x measured error
+  crown_bottom_z: -35.0          # lowest z of crown region tested for fit (rear)
+  brow_z: 26.0                   # face region (front, below this z) is handled by the lower component
+  face_half_angle: 55.0          # azimuth half-width of face region
+
+pose:
+  dy: [-6, -3, 0, 3, 6]               # [DECISION] bounded rigid translation grid (mm)
+  dz: [-12, -9, -6, -3, 0, 3, 6, 9, 12]
+  pitch: [0]                          # surrogate heads carry no pitch information
+
+liner:
+  # Two candidate foam grades. Moduli are [ASSUMPTION] order-of-magnitude placeholders, NOT
+  # measured; `measured: false` keeps every stability criterion "unevaluated".
+  materials:
+    soft:  {E_kPa: 60.0,  G_kPa: 20.0,  densification_strain: 0.70, measured: false}
+    firm:  {E_kPa: 300.0, G_kPa: 100.0, densification_strain: 0.60, measured: false}
+  catalogue:                          # [ASSUMPTION] purchasable thicknesses (mm)
+    soft: [12.7, 19.0]
+    firm: [5.0, 10.0, 15.0]
+  stack_rules:
+    base_material: soft               # a protective base layer is always present
+    max_fitting_layers: 2
+  min_padding: 12.7                   # [RULE] Lochac: >= 1/2 inch resilient padding
+  min_padding_basis: uncompressed     # [ASSUMPTION] rule wording does not say; sweep both
+  max_liner_depth: 30.0               # [ASSUMPTION] scenario value; sweep
+  fit_strain: [0.05, 0.30]            # [ASSUMPTION] acceptable installed compression
+  contact_pressure_kPa: [1.0, 12.0]   # [ASSUMPTION] comfort/stability band
+  compression_reserve_min: 8.0        # [ASSUMPTION] remaining crush distance before densification
+  unpadded_min_gap: 10.0              # [ASSUMPTION] non-pad regions: hard shell may not come closer
+  ear_min_clearance: 3.0              # [ASSUMPTION] hard-shell clearance to the folded ear
+  ear_fold_factor: 0.5                # [ASSUMPTION] fraction of measured ear protrusion remaining when an ear is folded under padding
+  zones: [crown, forehead, occiput, left, right]
+  max_pad_asymmetry: null             # optional left/right heuristic (mm); null = off
+
+lower:
+  # Lower variants are offsets from the crown so each is realisable on that crown's interface.
+  eye_band: 8.0                       # [ASSUMPTION] pupil within +/- this of the design eye line
+  grille_top_above_eye: 25.0          # [ASSUMPTION] brow edge of the grille opening
+  grille_bottom_below_eye: 70.0       # [ASSUMPTION] lower edge of the grille opening
+  eye_z_offsets: [-6, 0, 6]           # slot centre relative to the crown's nominal eye line
+  nominal_eye_z: 17.0
+  face_depth_offsets: [10, 22, 34]    # face plate y beyond crown front extent at eye level
+  chin_drops: [140, 155, 170]         # lower edge distance below eye line
+  fov_up_min: 15.0                    # [ASSUMPTION] degrees from pupil to grille top edge
+  fov_down_min: 45.0
+  nose_clearance_min: 20.0            # [ASSUMPTION]
+  chin_clearance_min: 20.0            # [ASSUMPTION]
+  chin_coverage_margin: 25.4          # [RULE] face guard extends >= 1 inch below chin/jaw line (Lochac 7.5, Society 12.4)
+  chin_plate_setback: 20.0            # chin region of face plate sits this much behind face plane
+  compat_face_offset: [0.0, 40.0]     # [ASSUMPTION] allowed face-plate offset from crown front (interface rule)
+
+catalogue:
+  length_steps: 8.0
+  breadth_steps: 8.0
+  height_steps: 8.0
+  quantile_range: [0.01, 0.99]
+  size_only_scales: 21
+
+costs:
+  # [ASSUMPTION] placeholders in AUD for ranking only; replace with quotes.
+  die_per_half: 18000
+  halves_share_die: false             # mirrored halves need distinct dies unless proven otherwise
+  integrated_lower_die_extra: 6000    # integrating face/jaw into the pressing deepens the die
+  lower_design: 1500                  # laser program, bend fixture, first-article check
+  lower_unit: 120
+  crown_unit: 260
+  batch_volume: 100
+
+optimiser:
+  max_families: 6
+  max_lowers_per_crown: 3
+  time_limit_s: 60
+  mip_rel_gap: 0.0
+  bootstrap: 20
+  bootstrap_time_limit_s: 10
