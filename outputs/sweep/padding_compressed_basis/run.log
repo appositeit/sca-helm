@@ -1,0 +1,46 @@
+[      0s] scenario=padding_compressed_basis source=ansur2 label=ansur2 surrogate (scalar measurements + assumed shape priors)
+[      4s] heads: 600 (196 F), train 420, validation 180; 2833 samples/head, covering radius 9.7 mm, min head radius 30.8 mm, nh fit ok 0.987
+[      4s] pad gap window 15.00-27.50 mm; allowances 7.32 mm (sampling bound 1.82); 36 stacks; 45 poses
+[     77s] calibrated radial offset 31.5 mm; catalogue 97 crowns (21 size-only)
+[    125s]   crowns evaluated: 10/97  (48 s)
+[    167s]   crowns evaluated: 20/97  (90 s)
+[    205s]   crowns evaluated: 30/97  (128 s)
+[    245s]   crowns evaluated: 40/97  (168 s)
+[    282s]   crowns evaluated: 50/97  (205 s)
+[    333s]   crowns evaluated: 60/97  (256 s)
+[    370s]   crowns evaluated: 70/97  (293 s)
+[    418s]   crowns evaluated: 80/97  (341 s)
+[    456s]   crowns evaluated: 90/97  (380 s)
+[    492s]   crowns evaluated: 97/97  (415 s)
+[    497s] feasibility matrix (600, 2619); heads with >=1 feasible assembly: 0.998 (weighted 0.998)
+[    497s]   size_only         k=1: train 0.477 (greedy 0.477, optimal) val 0.505
+[    497s]   size_only         k=2: train 0.610 (greedy 0.603, optimal) val 0.655
+[    497s]   size_only         k=3: train 0.686 (greedy 0.681, optimal) val 0.733
+[    498s]   size_only         k=4: train 0.721 (greedy 0.713, optimal) val 0.763
+[    498s]   size_only         k=5: train 0.749 (greedy 0.738, optimal) val 0.772
+[    498s]   size_only         k=6: train 0.768 (greedy 0.762, optimal) val 0.789
+[    499s]   shape_integrated  k=1: train 0.691 (greedy 0.691, optimal) val 0.710
+[    500s]   shape_integrated  k=2: train 0.864 (greedy 0.829, optimal) val 0.863
+[    502s]   shape_integrated  k=3: train 0.912 (greedy 0.906, optimal) val 0.898
+[    505s]   shape_integrated  k=4: train 0.953 (greedy 0.942, optimal) val 0.941
+[    510s]   shape_integrated  k=5: train 0.970 (greedy 0.960, optimal) val 0.978
+[    517s]   shape_integrated  k=6: train 0.980 (greedy 0.972, optimal) val 0.966
+[    520s]   modular           k=1: train 0.809 (greedy 0.809, optimal) val 0.821
+[    543s]   modular           k=2: train 0.952 (greedy 0.914, optimal) val 0.962
+[    577s]   modular           k=3: train 0.977 (greedy 0.972, optimal) val 0.983
+[    623s]   modular           k=4: train 0.990 (greedy 0.982, optimal) val 0.983
+[    681s]   modular           k=5: train 0.995 (greedy 0.991, optimal) val 0.988
+[    683s]   modular           k=6: train 0.997 (greedy 0.994, optimal) val 0.988
+[    773s] min-cost table:
+    architecture  target            status  mip_gap  tooling_cost_AUD  crown_families  press_die_sets  press_dies  complete_assemblies  train_cov  val_cov
+       size_only    0.85 infeasible_target      NaN               NaN               0               0           0                    0   0.000000 0.000000
+       size_only    0.90 infeasible_target      NaN               NaN               0               0           0                    0   0.000000 0.000000
+       size_only    0.95 infeasible_target      NaN               NaN               0               0           0                    0   0.000000 0.000000
+shape_integrated    0.85           optimal      0.0           96000.0               2               2           4                    2   0.854680 0.871728
+shape_integrated    0.90           optimal      0.0          144000.0               3               3           6                    3   0.910406 0.911932
+shape_integrated    0.95           optimal      0.0          192000.0               4               4           8                    4   0.951924 0.931078
+         modular    0.85           optimal      0.0           75000.0               2               2           4                    2   0.862334 0.848757
+         modular    0.90           optimal      0.0           78000.0               2               2           4                    4   0.901389 0.911932
+         modular    0.95           optimal      0.0           81000.0               2               2           4                    6   0.952198 0.961709
+[    773s] recommended set: cheapest modular set reaching 0.9 on training heads: ['S13-L11', 'S13-L14', 'S13-L20', 'G055-L11']
+[    813s] done

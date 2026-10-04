@@ -1,0 +1,8 @@
+measure,present,n,missing,out_of_plausible_range,abs_z_gt_4,mean_M,mean_F
+head_length,True,600,0,0,0,199.7,189.7
+head_breadth,True,600,0,0,1,154.4,147.3
+head_circumference,True,600,0,0,0,574.6,558.7
+tragion_top,True,600,0,0,0,131.3,126.5
+menton_sellion,True,600,0,0,0,122.8,112.5
+ear_protrusion,True,600,0,0,0,23.0,20.4
+interpupillary,True,600,0,0,0,64.3,61.5

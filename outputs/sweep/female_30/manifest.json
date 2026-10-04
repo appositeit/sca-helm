@@ -1,0 +1,61 @@
+{
+  "created": "2026-10-04T02:39:50+0000",
+  "config_hash": "89d3c34589ca",
+  "seed": 20261003,
+  "data": {
+    "ANSUR_II_MALE_Public.csv": {
+      "sha256": "0547aea0170e5293de519389981135e75803f02e6d40c77ace740decc0caac64",
+      "rows": 4082
+    },
+    "ANSUR_II_FEMALE_Public.csv": {
+      "sha256": "ed7e800aa97a4d42f8286b988be2fe1883a2e789588169db959864b707d1757a",
+      "rows": 1986
+    }
+  },
+  "python": "3.11.15",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.6",
+    "trimesh": "5.1.1"
+  },
+  "solver": "HiGHS (highspy), greedy warm start, exact dominated-column pruning",
+  "source": "ansur2",
+  "label": "ansur2 surrogate (scalar measurements + assumed shape priors)",
+  "scenario": "female_30",
+  "n_heads": 600,
+  "radial_offset": 30.0,
+  "n_crowns": 97,
+  "n_assemblies": 2619,
+  "allowances_mm": 7.315265627996303,
+  "sampling_bound_mm": 1.8152656279963029,
+  "pad_window_mm": [
+    11.850000000000001,
+    27.5
+  ],
+  "recommended": [
+    "S11-L20",
+    "G055-L11",
+    "G055-L20",
+    "G055-L23"
+  ],
+  "recommended_note": "cheapest modular set reaching 0.9 on training heads",
+  "runtime_s": 803.303644657135,
+  "criteria": {
+    "C1_no_hard_contact": "geometric",
+    "C2_liner_present": "geometric",
+    "C3_pad_fill_preload": "geometric",
+    "C3_stability_translation_rotation": "unevaluated",
+    "C4_compression_reserve": "geometric",
+    "C4_protective_stack_validated": "unevaluated",
+    "C5_eye_line": "geometric",
+    "C5_field_of_view_vertical": "geometric",
+    "C5_field_of_view_full": "unevaluated",
+    "C6_nose_chin_clearance": "geometric",
+    "C6_jaw_cheek_lateral": "unevaluated",
+    "C6_motion_range_coverage": "unevaluated",
+    "C7_retention": "unevaluated",
+    "C8_seam_projection": "geometric",
+    "C8_attachments": "unevaluated"
+  }
+}

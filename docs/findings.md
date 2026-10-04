@@ -65,15 +65,35 @@ Each family is a **pair** of dies (left and right halves). The modular min-cost 
 
 | Finding | Status | Reasoning |
 | --- | --- | --- |
-| A size-only family with one fixed lower cannot reach 85% | **Robust within the model**, and it holds in every sweep scenario (see section 4) | Face geometry (eye line, nose, chin) varies independently of skull size. A scaled lower cannot track it. |
+| A size-only family with one fixed lower cannot reach 85% at default assumptions | **Fairly robust.** It reaches 90% only with a wider pressure band or tighter tolerances, and then needs 10–12 sizes (section 4). | Face geometry (eye line, nose, chin) varies independently of skull size. A scaled lower cannot track it. |
 | Laser-cut lower variants matter more than crown shape freedom | **Model result, sensitive to assumed face priors** | Size-only crowns with lowers match shape-variable crowns with lowers. Eye height, nose protrusion and chin set-back are *priors*, not measurements, so their spread decides how many lowers are needed. |
-| Two or three crown families can cover about 90% of the proxy population geometrically | **Sensitive to the liner assumptions** | The fillable pad window (about 12–27.5 mm) lets one crown span roughly 15 mm of head size. The window comes from placeholder foam properties and pressure limits. |
+| Two or three crown families can cover about 90% of the proxy population geometrically | **Sensitive.** The answer runs from 1 to 6 families for liner depths of 35 to 25 mm, and reaches 4 with wider shape priors (section 4). | The fillable pad window (about 12–27.5 mm) lets one crown span roughly 15 mm of head size. The window comes from placeholder foam properties and pressure limits. |
 | A modular architecture beats integrated on tooling cost at equal coverage | **Follows from the cost structure**, if laser-cut lowers really cost much less than pressed variants | The cost ratio is a placeholder |
 | The ANSUR II proxy represents Lochac fighters | **Not established** | It is a military, US, aged 17–58, screened population. The sex mix is assumed. |
 
 ## 4. Sensitivity
 
-SWEEP_TABLE_PLACEHOLDER
+Each scenario changes one assumption (`config/scenarios.yaml`). Every scenario uses 600 participants and a coarser 12 mm catalogue, so read the numbers relative to the sweep's own baseline, not the main run. Coverage is on held-out heads (180 per scenario, so about ±3 percentage points of noise). "Families for 90%" is the cheapest modular set reaching 90% on training heads.
+
+| Scenario | Allowance (mm) | Size-only, fixed lower: k = 3 / 6 | Size-only: families for 90% | Modular: k = 1 / 2 / 3 | Modular: families for 90% |
+| --- | --- | --- | --- | --- | --- |
+| Baseline (sweep grid) | 7.3 | 0.75 / 0.77 | unreachable | 0.84 / 0.95 / 0.99 | 2 |
+| Max liner depth 25 mm | 7.3 | 0.56 / 0.70 | unreachable | 0.60 / 0.74 / 0.80 | **6** |
+| Max liner depth 35 mm | 7.3 | 0.73 / 0.78 | unreachable | 0.95 / 0.98 / 0.99 | **1** |
+| 12.7 mm minimum on compressed thickness | 7.3 | 0.73 / 0.79 | unreachable | 0.82 / 0.96 / 0.98 | 2 |
+| Wider contact-pressure band (0.5–20 kPa) | 7.3 | 0.86 / 0.89 | 10 | 0.92 / 0.99 / 1.00 | 2 |
+| Tolerance 3 mm, hair/cap 5 mm | 10.8 | 0.49 / 0.59 | unreachable | 0.80 / 0.94 / 0.95 | 2 |
+| Tolerance 0.75 mm, hair/cap 1.5 mm | 5.1 | 0.81 / 0.87 | 12 | 0.87 / 0.95 / 0.98 | 2 |
+| 30% female | 7.3 | 0.74 / 0.77 | unreachable | 0.89 / 0.94 / 0.98 | 2 |
+| Doubled spread on unmeasured shape priors | 8.2 | 0.51 / 0.58 | unreachable | 0.75 / 0.81 / 0.86 | **4** |
+
+What the sweep shows (model results):
+
+- **Maximum liner depth dominates.** Moving it from 25 mm to 35 mm changes the modular answer from 6 crown families to 1. That one number decides the size of the shell family, and it is a pure assumption until Gate B. (A 35 mm liner also makes a bigger, heavier helm; this sweep scores geometry only.)
+- **Unmeasured shape variation is second.** Doubling the spread of the assumed cranial and face priors takes the modular answer from 2 families to 4. Real scans could move it either way.
+- **The modular conclusion is stable.** Across tolerances, padding basis, pressure band and sex mix, the modular architecture still needs 2 families for 90%.
+- **Size-only with a fixed lower reaches 90% only with favourable assumptions** (a wide pressure band or tight tolerances), and then needs 10–12 sizes. That is a manufacturing problem in its own right.
+- **Tolerance and allowances matter more for size-only than for modular.** Lower variants absorb part of the face-geometry spread that a fixed lower cannot.
 
 ## 5. Recommendation
 

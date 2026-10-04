@@ -1,0 +1,11 @@
+sex,status,n,head_length_mean,head_breadth_mean,head_circumference_mean,tragion_top_mean,menton_sellion_mean
+F,excluded,16,186.5,145.8,550.5,123.1,111.5
+F,geometric_feasible,180,190.0,147.4,559.5,126.8,112.6
+M,excluded,43,202.7,157.0,582.3,131.6,123.2
+M,geometric_feasible,361,199.4,154.1,573.6,131.2,122.7
+all,reason:pad_too_tight,15,,,,,
+all,reason:pad_between_steps,14,,,,,
+all,reason:field_of_view,13,,,,,
+all,reason:nose,10,,,,,
+all,reason:pad_too_loose,8,,,,,
+all,reason:eye_line,1,,,,,

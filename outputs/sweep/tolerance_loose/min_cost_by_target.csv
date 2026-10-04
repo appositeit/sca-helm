@@ -1,0 +1,10 @@
+architecture,target,status,mip_gap,tooling_cost_AUD,crown_families,press_die_sets,press_dies,complete_assemblies,train_cov,val_cov,assemblies
+size_only,0.85,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+size_only,0.9,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+size_only,0.95,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+shape_integrated,0.85,optimal,0.0,143999.99999999977,3,3,6,3,0.8828133453561767,0.8998061852195163,"['S15-L11', 'G054-L20', 'G071-L11']"
+shape_integrated,0.9,optimal,0.0,191999.9999999975,4,4,8,4,0.9016627592425609,0.9215050139041039,"['S13-L11', 'G039-L11', 'G054-L20', 'G071-L11']"
+shape_integrated,0.95,optimal,0.0,239999.9999999999,5,5,10,5,0.9519242560865644,0.941290974972613,"['S11-L20', 'S16-L11', 'G039-L11', 'G054-L20', 'G071-L11']"
+modular,0.85,optimal,0.0,76500.0,2,2,4,3,0.8546798917944094,0.8902334204095392,"['S14-L01', 'S14-L20', 'G075-L20']"
+modular,0.9,optimal,0.0,79500.0,2,2,4,5,0.9049413886384131,0.924058312968737,"['S13-L02', 'S13-L20', 'S13-L23', 'G075-L11', 'G075-L20']"
+modular,0.95,optimal,0.0,118499.99999999543,3,3,6,7,0.9513796212804329,0.9451167102047695,"['S10-L02', 'S10-L20', 'S16-L11', 'S16-L20', 'S16-L23', 'G075-L01', 'G075-L11']"

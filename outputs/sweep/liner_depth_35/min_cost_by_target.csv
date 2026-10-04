@@ -1,0 +1,10 @@
+architecture,target,status,mip_gap,tooling_cost_AUD,crown_families,press_die_sets,press_dies,complete_assemblies,train_cov,val_cov,assemblies
+size_only,0.85,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+size_only,0.9,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+size_only,0.95,infeasible_target,,,0,0,0,0,0.0,0.0,[]
+shape_integrated,0.85,optimal,0.0,95999.99999999999,2,2,4,2,0.9073976555455365,0.9349035139462376,"['G039-L20', 'G055-L20']"
+shape_integrated,0.9,optimal,0.0,95999.99999999983,2,2,4,2,0.9336230838593329,0.9617089407600912,"['G038-L11', 'G055-L20']"
+shape_integrated,0.95,optimal,0.0,143999.99999999942,3,3,6,3,0.9513760144274122,0.9706412741215136,"['S12-L11', 'S18-L01', 'G067-L20']"
+modular,0.85,optimal,0.0,39000.0,1,1,2,2,0.8792605951307484,0.9157579843262829,"['S16-L01', 'S16-L20']"
+modular,0.9,optimal,0.0,40500.0,1,1,2,3,0.9095834084761046,0.9425634111401364,"['S15-L11', 'S15-L13', 'S15-L20']"
+modular,0.95,optimal,0.0,76500.0,2,2,4,3,0.9511055004508565,0.9808544703800455,"['S12-L11', 'S12-L20', 'S18-L11']"

@@ -1,0 +1,175 @@
+units:
+  length: mm
+  pressure: kPa
+  angle: deg
+  currency: AUD
+seed: 20261003
+population:
+  target_coverage: 0.9
+  female_fraction: 0.15
+  max_participants: 600
+  validation_fraction: 0.3
+head_model:
+  f_front:
+  - 0.5
+  - 0.02
+  z_equator:
+  - 32.0
+  - 5.0
+  n_vertical:
+  - 2.3
+  - 0.15
+  c_low_frac:
+  - 0.55
+  - 0.05
+  pupil_z:
+  - 17.0
+  - 3.0
+  sellion_z_minus_pupil:
+  - 4.0
+  - 2.0
+  nose_protrusion:
+  - 22.0
+  - 3.0
+  pupil_setback:
+  - 12.0
+  - 3.0
+  chin_setback:
+  - 12.0
+  - 6.0
+  ear_protrusion_default:
+  - 21.0
+  - 3.0
+  hair_allowance: 3.0
+  sample_spacing: 7.0
+shell:
+  material:
+    name: mild steel
+    thickness: 2.0
+    density_g_cm3: 7.85
+  seam_bead_height: 1.5
+  seam_bead_halfwidth: 4.0
+  manufacturing_tolerance: 1.5
+  measurement_uncertainty: 1.0
+  min_curvature_radius: 25.0
+  n_vertical: 2.2
+  sample_spacing: 5.0
+  plane_neighbours: 24
+  field_spacing: 2.0
+  field_eps: 0.1
+  crown_bottom_z: -35.0
+  brow_z: 26.0
+  face_half_angle: 55.0
+pose:
+  dy:
+  - -6
+  - -3
+  - 0
+  - 3
+  - 6
+  dz:
+  - -12
+  - -9
+  - -6
+  - -3
+  - 0
+  - 3
+  - 6
+  - 9
+  - 12
+  pitch:
+  - 0
+liner:
+  materials:
+    soft:
+      E_kPa: 60.0
+      G_kPa: 20.0
+      densification_strain: 0.7
+      measured: false
+    firm:
+      E_kPa: 300.0
+      G_kPa: 100.0
+      densification_strain: 0.6
+      measured: false
+  catalogue:
+    soft:
+    - 12.7
+    - 19.0
+    firm:
+    - 5.0
+    - 10.0
+    - 15.0
+  stack_rules:
+    base_material: soft
+    max_fitting_layers: 2
+  min_padding: 12.7
+  min_padding_basis: uncompressed
+  max_liner_depth: 30.0
+  fit_strain:
+  - 0.05
+  - 0.3
+  contact_pressure_kPa:
+  - 0.5
+  - 20.0
+  compression_reserve_min: 8.0
+  unpadded_min_gap: 10.0
+  ear_min_clearance: 3.0
+  ear_fold_factor: 0.5
+  zones:
+  - crown
+  - forehead
+  - occiput
+  - left
+  - right
+  max_pad_asymmetry: null
+lower:
+  eye_band: 8.0
+  grille_top_above_eye: 25.0
+  grille_bottom_below_eye: 70.0
+  eye_z_offsets:
+  - -6
+  - 0
+  - 6
+  nominal_eye_z: 17.0
+  face_depth_offsets:
+  - 10
+  - 22
+  - 34
+  chin_drops:
+  - 140
+  - 155
+  - 170
+  fov_up_min: 15.0
+  fov_down_min: 45.0
+  nose_clearance_min: 20.0
+  chin_clearance_min: 20.0
+  chin_coverage_margin: 25.4
+  chin_plate_setback: 20.0
+  compat_face_offset:
+  - 0.0
+  - 40.0
+catalogue:
+  length_steps: 12.0
+  breadth_steps: 12.0
+  height_steps: 12.0
+  quantile_range:
+  - 0.01
+  - 0.99
+  size_only_scales: 21
+costs:
+  die_per_half: 18000
+  halves_share_die: false
+  integrated_lower_die_extra: 6000
+  lower_design: 1500
+  lower_unit: 120
+  crown_unit: 260
+  batch_volume: 100
+optimiser:
+  max_families: 6
+  max_lowers_per_crown: 3
+  time_limit_s: 60
+  mip_rel_gap: 0.0
+  bootstrap: 0
+  bootstrap_time_limit_s: 5
+scenario: pressure_band_wide
+scenario_label: wider acceptable contact-pressure band (0.5-20 kPa)
