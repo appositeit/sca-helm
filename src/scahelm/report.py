@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 ARCH_STYLE = {"size_only": ("#7f7f7f", "Size-only (scaled single shape)"),
+              "size_only_modular": ("#9467bd", "Size-only crowns + laser-cut lowers"),
               "shape_integrated": ("#1f77b4", "Shape-variable, integrated lower"),
               "modular": ("#d62728", "Shape-variable crown + laser-cut lowers")}
 

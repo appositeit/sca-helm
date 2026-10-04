@@ -1,0 +1,7 @@
+architecture,families,train_cov,val_cov,status,mip_gap
+size_only_modular,1,0.82,0.793,optimal,0.0
+size_only_modular,2,0.943,0.951,optimal,0.0
+size_only_modular,3,0.972,0.959,optimal,0.0
+size_only_modular,4,0.986,0.972,optimal,0.0
+size_only_modular,5,0.991,0.975,optimal,0.0
+size_only_modular,6,0.993,0.985,optimal,0.0

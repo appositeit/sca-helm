@@ -115,6 +115,8 @@ def architecture_columns(F: Feasibility, cfg: dict) -> dict:
     return {
         "size_only": {"cols": np.flatnonzero((fam == "size_only") & np.isin(lid, list(default_ids))),
                       "integrated": True, "label": "Size-only (one scaled shape, integrated lower)"},
+        "size_only_modular": {"cols": np.flatnonzero(fam == "size_only"), "integrated": False,
+                              "label": "Size-only crowns + laser-cut lower variants"},
         "shape_integrated": {"cols": np.arange(len(fam)), "integrated": True,
                              "label": "Shape-variable, lower integrated in the pressing"},
         "modular": {"cols": np.arange(len(fam)), "integrated": False,
@@ -209,4 +211,4 @@ def provenance(cfg: dict, prov: dict, extra: dict) -> dict:
             "seed": cfg["seed"], "data": prov, "python": platform.python_version(),
             "packages": {"numpy": numpy.__version__, "scipy": scipy.__version__,
                          "pandas": pd.__version__, "trimesh": tm.__version__},
-            "solver": "HiGHS via scipy.optimize.milp", **extra}
+            "solver": "HiGHS (highspy), greedy warm start, exact dominated-column pruning", **extra}

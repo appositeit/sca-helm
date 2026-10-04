@@ -44,7 +44,10 @@ def write_step(crown: Crown, path: Path, z_min: float, n_eta: int = 40, n_omega:
     """Inner surface as one periodic B-spline surface interpolated through the analytic
     superquadric. The apex row is dropped (a pole would make the surface degenerate), so the
     exported surface stops ~1 degree short of the crown; the gap is < 1 mm across."""
-    from OCP.TColgp import TColgp_Array2OfPnt
+    try:                                   # OCP < 8
+        from OCP.TColgp import TColgp_Array2OfPnt
+    except ImportError:                    # OCP 8 exposes NCollection templates here
+        from OCP.OCP.collections import Array2_gp_Pnt as TColgp_Array2OfPnt
     from OCP.gp import gp_Pnt
     from OCP.GeomAPI import GeomAPI_PointsToBSplineSurface
     from OCP.BRepBuilderAPI import BRepBuilderAPI_MakeFace

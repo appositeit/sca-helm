@@ -65,6 +65,8 @@ def run(source: str, scenario: str | None, outdir: Path, n: int | None = None, p
         crown_fail = pipeline.evaluate_catalogue(ev, crowns, processes, log)
         np.savez_compressed(cache, key=key, fail=np.array(crown_fail, dtype=object))
     F = pipeline.feasibility(ev, crowns, crown_fail, cfg)
+    np.savez_compressed(outdir / "feasibility.npz", A=F.A, pose=F.pose, crown_of=F.crown_of,
+                        ids=np.array([a.id for a in F.assemblies]), pid=t.pid.to_numpy(), w=w, val=val)
     log(f"feasibility matrix {F.A.shape}; heads with >=1 feasible assembly: "
         f"{F.A.any(1).mean():.3f} (weighted {w[F.A.any(1)].sum() / w.sum():.3f})")
 
@@ -77,7 +79,7 @@ def run(source: str, scenario: str | None, outdir: Path, n: int | None = None, p
 
     boots = []
     if cfg["optimiser"]["bootstrap"]:
-        for arch in ("size_only", "shape_integrated", "modular"):
+        for arch in ("size_only", "size_only_modular", "shape_integrated", "modular"):
             boots.append(pipeline.bootstrap(F, w, train, cfg, arch, range(1, cfg["optimiser"]["max_families"] + 1),
                                             cfg["seed"], log))
         bt = pd.concat(boots)

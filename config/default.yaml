@@ -124,4 +124,4 @@ optimiser:
   time_limit_s: 60
   mip_rel_gap: 0.0
   bootstrap: 20
-  bootstrap_time_limit_s: 10
+  bootstrap_time_limit_s: 5

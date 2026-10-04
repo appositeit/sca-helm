@@ -21,7 +21,6 @@ import itertools
 from dataclasses import dataclass, field
 
 import numpy as np
-from scipy.optimize import milp, LinearConstraint, Bounds
 from scipy.sparse import csr_matrix, coo_matrix, vstack, hstack, identity
 
 
@@ -74,6 +73,8 @@ def greedy(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, k: int,
             cols = np.flatnonzero(crown_of == c)
             pick, cov = [], covered.copy()
             for _ in range(1 if integrated else lowers_per_crown):
+                if not len(cols):
+                    break
                 gains = (A[:, cols] & ~cov[:, None]).T @ w
                 if gains.max() <= 0:
                     break
@@ -117,23 +118,127 @@ def _model(A, w, crown_of, lowers_per_crown, integrated):
     return Ad, wd, G, J, S, crowns, cidx, nv, rows
 
 
-def _solve(c, rows, nv, J, S, G, time_limit, gap, extra=None):
-    cons = [LinearConstraint(M, lo, hi) for M, lo, hi in rows]
-    if extra:
-        cons += extra
-    integ = np.r_[np.ones(J + S), np.zeros(G)]
-    res = milp(c, constraints=cons, integrality=integ, bounds=Bounds(0, 1),
-               options={"time_limit": time_limit, "mip_rel_gap": gap, "disp": False})
-    return res
+@dataclass
+class _Res:
+    x: np.ndarray | None
+    status: int          # 0 optimal, 1 time limit with incumbent, 2 failed
+    mip_gap: float | None
+    fun: float | None
+    message: str = ""
+
+
+def _solve(c, rows, nv, J, S, G, time_limit, gap, x0=None):
+    """HiGHS MILP via highspy, warm-started from x0 (e.g. the greedy solution) when given."""
+    import highspy
+    M = vstack([r[0] for r in rows]).tocsc()
+    lo = np.concatenate([np.broadcast_to(r[1], r[0].shape[0]) for r in rows]).astype(float)
+    hi = np.concatenate([np.broadcast_to(r[2], r[0].shape[0]) for r in rows]).astype(float)
+    inf = highspy.kHighsInf
+    lo[np.isinf(lo)] = -inf
+    hi[np.isinf(hi)] = inf
+    lp = highspy.HighsLp()
+    lp.num_col_, lp.num_row_ = nv, M.shape[0]
+    lp.col_cost_ = np.asarray(c, float)
+    lp.col_lower_, lp.col_upper_ = np.zeros(nv), np.ones(nv)
+    lp.row_lower_, lp.row_upper_ = lo, hi
+    lp.a_matrix_.format_ = highspy.MatrixFormat.kColwise
+    lp.a_matrix_.start_ = M.indptr
+    lp.a_matrix_.index_ = M.indices
+    lp.a_matrix_.value_ = M.data.astype(float)
+    lp.integrality_ = [highspy.HighsVarType.kInteger] * (J + S) + [highspy.HighsVarType.kContinuous] * G
+    h = highspy.Highs()
+    h.setOptionValue("output_flag", False)
+    h.setOptionValue("time_limit", float(time_limit))
+    h.setOptionValue("mip_rel_gap", float(gap))
+    h.setOptionValue("random_seed", 0)
+    h.passModel(lp)
+    if x0 is not None:
+        sol = highspy.HighsSolution()
+        sol.col_value = list(map(float, x0))
+        sol.value_valid = True
+        h.setSolution(sol)
+    h.run()
+    ms = h.getModelStatus()
+    info = h.getInfo()
+    x = np.array(h.getSolution().col_value) if info.primal_solution_status == 2 else None
+    if ms == highspy.HighsModelStatus.kOptimal:
+        st = 0
+    elif x is not None:
+        st = 1
+    else:
+        st = 2
+    return _Res(x, st, float(info.mip_gap) if x is not None else None,
+                float(info.objective_function_value) if x is not None else None, h.modelStatusToString(ms))
+
+
+def _x0(sel_cols, A_d, crown_idx, J, S, G):
+    x = np.zeros(J + S + G)
+    x[list(sel_cols)] = 1
+    x[J + np.unique(crown_idx[list(sel_cols)])] = 1
+    if len(sel_cols):
+        x[J + S:] = A_d[:, list(sel_cols)].any(1)
+    return x
+
+
+def _map_to_kept(A, crown_of, cols, chosen, integrated) -> list:
+    """Positions (in `cols`) of a feasible replacement for each chosen column: itself if kept,
+    otherwise a kept column covering a superset (same crown when modular)."""
+    pos = {int(j): i for i, j in enumerate(cols)}
+    out = []
+    for j in chosen:
+        if j in pos:
+            out.append(pos[j])
+            continue
+        cand = np.arange(len(cols)) if integrated else np.flatnonzero(crown_of[cols] == crown_of[j])
+        sup = cand[~(A[:, [j]] & ~A[:, cols[cand]]).any(0)]
+        if len(sup):
+            out.append(int(sup[0]))
+    return sorted(set(out))
+
+
+def prune_columns(A: np.ndarray, crown_of: np.ndarray, integrated: bool) -> np.ndarray:
+    """Indices of columns that can appear in an optimal solution. Exact reductions only:
+    empty columns are dropped, and a column whose covered set is a subset of another
+    column's is dropped when the two cost the same and are interchangeable under the
+    constraints (same crown for modular; any column for integrated). Ties keep the first."""
+    nz = np.flatnonzero(A.any(0))
+    if integrated:
+        groups = [nz]
+    else:
+        groups = [nz[crown_of[nz] == c] for c in np.unique(crown_of[nz])]
+    keep = []
+    for g in groups:
+        if len(g) == 1:
+            keep += list(g)
+            continue
+        B = A[:, g].astype(np.float32)
+        cnt = B.sum(0)
+        alive = np.ones(len(g), bool)
+        order = np.argsort(-cnt, kind="stable")
+        notB = 1.0 - B
+        for s0 in range(0, len(g), 2048):
+            blk = order[s0:s0 + 2048]
+            # outside[i, j] = number of rows covered by column i but not by column j
+            outside = B[:, blk].T @ notB
+            for r, i in enumerate(blk):
+                sup = np.flatnonzero(outside[r] == 0)
+                sup = sup[sup != i]
+                # i is dominated by any superset j that is strictly larger, or equal and earlier
+                dom = sup[(cnt[sup] > cnt[i]) | ((cnt[sup] == cnt[i]) & (sup < i))]
+                if len(dom) and alive[dom].any():
+                    alive[i] = False
+        keep += list(g[alive])
+    return np.array(sorted(keep), int)
 
 
 def max_coverage(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, k: int, *,
                  lowers_per_crown: int = 1, integrated: bool = False,
                  time_limit: float = 60, mip_gap: float = 0.0, warm: Selection | None = None) -> Selection:
-    Ad, wd, G, J, S, crowns, cidx, nv, rows = _model(A, w, crown_of, lowers_per_crown, integrated)
-    if G == 0:
+    cols = prune_columns(A, crown_of, integrated)
+    if not len(cols):
         return Selection([], [], 0.0, "empty")
-    # family budget: crowns for modular, assemblies for integrated
+    Ap, cp = A[:, cols], crown_of[cols]
+    Ad, wd, G, J, S, crowns, cidx, nv, rows = _model(Ap, w, cp, lowers_per_crown, integrated)
     budget = np.zeros(nv)
     if integrated:
         budget[:J] = 1
@@ -141,14 +246,17 @@ def max_coverage(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, k: int, *,
         budget[J:J + S] = 1
     rows.append((csr_matrix(budget), -np.inf, float(k)))
     c = np.r_[np.zeros(J + S), -wd]
-    res = _solve(c, rows, nv, J, S, G, time_limit, mip_gap)
+    if warm is None:
+        warm = greedy(A, w, crown_of, k, lowers_per_crown, integrated)
+    x0 = _x0(_map_to_kept(A, crown_of, cols, warm.assemblies, integrated), Ad, cidx, J, S, G)
+    res = _solve(c, rows, nv, J, S, G, time_limit, mip_gap, x0)
     if res.x is None:
-        return warm or Selection([], [], 0.0, f"failed:{res.message}")
-    v = np.flatnonzero(res.x[:J] > 0.5)
-    sel = Selection(list(v), list(crowns[np.unique(cidx[v])]), coverage_of(A, w, v),
-                    "optimal" if res.status == 0 else "time_limit",
-                    gap=getattr(res, "mip_gap", None))
-    if warm is not None and warm.coverage > sel.coverage:
+        warm.status += "+solver_failed"
+        return warm
+    v = cols[np.flatnonzero(res.x[:J] > 0.5)]
+    sel = Selection(list(v), list(np.unique(crown_of[v])), coverage_of(A, w, v),
+                    "optimal" if res.status == 0 else "time_limit", gap=res.mip_gap)
+    if warm.coverage > sel.coverage + 1e-12:      # cannot happen with a warm start; kept as a guard
         warm.status += "+solver_worse"
         return warm
     return sel
@@ -157,22 +265,31 @@ def max_coverage(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, k: int, *,
 def min_cost(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, target: float, *,
              crown_cost: float, lower_cost: float, lowers_per_crown: int = 1,
              integrated: bool = False, time_limit: float = 60, mip_gap: float = 0.0) -> Selection:
-    Ad, wd, G, J, S, crowns, cidx, nv, rows = _model(A, w, crown_of, lowers_per_crown, integrated)
-    if G == 0 or wd.sum() < target * w.sum() - 1e-9:
+    cols = prune_columns(A, crown_of, integrated)
+    if not len(cols):
         return Selection([], [], 0.0, "infeasible_target")
-    cov = np.r_[np.zeros(J + S), wd]
-    rows.append((csr_matrix(cov), target * w.sum(), np.inf))
+    Ap, cp = A[:, cols], crown_of[cols]
+    Ad, wd, G, J, S, crowns, cidx, nv, rows = _model(Ap, w, cp, lowers_per_crown, integrated)
+    if wd.sum() < target * w.sum() - 1e-9:
+        return Selection([], [], 0.0, "infeasible_target")
+    rows.append((csr_matrix(np.r_[np.zeros(J + S), wd]), target * w.sum(), np.inf))
     if integrated:
         c = np.r_[np.full(J, crown_cost), np.zeros(S), np.zeros(G)]
     else:
         c = np.r_[np.full(J, lower_cost), np.full(S, crown_cost), np.zeros(G)]
-    res = _solve(c, rows, nv, J, S, G, time_limit, mip_gap)
+    # warm start: greedy with increasing family counts until the target is met
+    x0 = None
+    for k in range(1, S + 1):
+        g = greedy(Ap, w, cp, k, lowers_per_crown, integrated)
+        if g.coverage >= target - 1e-12:
+            x0 = _x0(g.assemblies, Ad, cidx, J, S, G)
+            break
+    res = _solve(c, rows, nv, J, S, G, time_limit, mip_gap, x0)
     if res.x is None:
         return Selection([], [], 0.0, f"failed:{res.message}")
-    v = np.flatnonzero(res.x[:J] > 0.5)
-    return Selection(list(v), list(crowns[np.unique(cidx[v])]), coverage_of(A, w, v),
-                     "optimal" if res.status == 0 else "time_limit",
-                     gap=getattr(res, "mip_gap", None), cost=float(res.fun))
+    v = cols[np.flatnonzero(res.x[:J] > 0.5)]
+    return Selection(list(v), list(np.unique(crown_of[v])), coverage_of(A, w, v),
+                     "optimal" if res.status == 0 else "time_limit", gap=res.mip_gap, cost=float(res.fun))
 
 
 def exhaustive(A: np.ndarray, w: np.ndarray, crown_of: np.ndarray, k: int, *,

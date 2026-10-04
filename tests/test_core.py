@@ -264,3 +264,31 @@ def test_distance_accuracy(cfg):
     shell_part = ev.bound - H.sample_spacing_max ** 2 / (2 * H.min_radius)
     assert (est - ref).max() <= shell_part + 0.05
     assert (ref - est).max() <= 0.4          # reference point cloud itself overestimates by <~ 0.35
+
+
+def test_step_dimensions(tmp_path):
+    pytest.importorskip("OCP")
+    from OCP.STEPControl import STEPControl_Reader
+    from OCP.Bnd import Bnd_Box
+    from OCP.BRepBndLib import BRepBndLib
+    sq = geometry.Superquadric(120, 115, 100, 125, 90, 30, 2.4, 2.2)
+    p = export.write_step(shells.Crown("X", "test", sq), tmp_path / "x.step", z_min=-35)
+    r = STEPControl_Reader()
+    r.ReadFile(str(p))
+    r.TransferRoots()
+    from OCP.TopExp import TopExp_Explorer
+    from OCP.TopAbs import TopAbs_FACE
+    from OCP.TopoDS import TopoDS
+    from OCP.BRepAdaptor import BRepAdaptor_Surface
+    face = TopoDS.Face(TopExp_Explorer(r.OneShape(), TopAbs_FACE).Current())
+    srf = BRepAdaptor_Surface(face)
+    u = np.linspace(srf.FirstUParameter(), srf.LastUParameter(), 25)
+    v = np.linspace(srf.FirstVParameter(), srf.LastVParameter(), 50)
+    pts = np.array([[srf.Value(a, b).X(), srf.Value(a, b).Y(), srf.Value(a, b).Z()] for a in u for b in v])
+    # every exported point lies on the analytic inner surface (to < 0.5 mm) ...
+    from scipy.spatial import cKDTree
+    ref = geometry.sample_surface(sq, 0.5, z_min=-40)
+    assert cKDTree(ref).query(pts)[0].max() < 0.6
+    # ... and the export spans the expected extents (mm, frame preserved)
+    assert pts[:, 1].max() == pytest.approx(120, abs=1) and pts[:, 1].min() == pytest.approx(-115, abs=1)
+    assert pts[:, 2].min() == pytest.approx(-35, abs=1) and pts[:, 2].max() > 150

@@ -22,6 +22,9 @@ def main(argv=None):
     r.add_argument("--bootstrap", type=int, default=None)
     r.add_argument("--no-cad", action="store_true")
 
+    c = sub.add_parser("cad", help="re-export CAD for a finished run from its candidate tables")
+    c.add_argument("run_dir")
+
     q = sub.add_parser("ingest", help="verify and canonicalise ANSUR II; write data/processed + quality report")
 
     s = sub.add_parser("sweep", help="run every scenario in config/scenarios.yaml")
@@ -37,6 +40,22 @@ def main(argv=None):
         name = a.scenario or "default"
         out = Path(a.out) if a.out else ROOT / "outputs" / f"{a.source if a.source in ('synthetic', 'ansur2') else 'custom'}_{name}"
         run(a.source, a.scenario, out, a.n, a.processes, a.bootstrap, cad=not a.no_cad)
+    elif a.cmd == "cad":
+        import pandas as pd, yaml
+        from .geometry import Superquadric
+        from .shells import Crown, Lower, Assembly
+        from .run import cad_exports
+        d = Path(a.run_dir)
+        cfg = yaml.safe_load(open(d / "config_used.yaml"))
+        cr = {r.crown_id: Crown(r.crown_id, r.family, Superquadric(r.a_front, r.a_rear, r.b, r.c_up, r.c_low,
+                                                                   r.z_eq, r.nh, r.nv))
+              for r in pd.read_csv(d / "candidate_crowns.csv").itertuples()}
+        lows = pd.read_csv(d / "candidate_lowers.csv").drop(columns=["status"])
+        asm = [Assembly(cr[r["crown_id"]], Lower(**r)) for r in lows.to_dict("records")]
+        for f in (d / "cad").glob("*.FAILED.txt"):
+            f.unlink()
+        cad_exports(asm, cfg, d / "cad")
+        print(f"CAD written to {d / 'cad'}")
     elif a.cmd == "ingest":
         from . import ingest
         t, prov = ingest.load_ansur2(ROOT / "data" / "raw" / "ansur2")
